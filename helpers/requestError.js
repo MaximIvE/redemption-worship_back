@@ -1,6 +1,6 @@
 const def={
     400: "Bad request",
-    404: "Not found",
+    404: "Not Found",
     409: "Conflicting Request",
 }
 
