@@ -1,0 +1,202 @@
+[
+ {
+    "id":       "1",
+    "title":    "Найближче служіння",
+    "location": "Харків",
+    "location_id": "kharkiv",
+    "date":     "30.03.2025, Нд",
+    "team":     "Команда_1 (Харків)",
+    "author":   "Ніка Кайлова",
+    "author_id": "10",
+    "banner": "/images/worship.jpg",
+    "list":     [
+        {
+            "song_id": "25",
+            "name": "В Божому домі",
+            "name_en": "House of the Lord",
+            "musician": "Phill Wickham",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/4603.jpg",
+            
+            "originalKey": "Bb",
+            "key": "Bb",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        },
+        {
+            "song_id": "10",
+            "name": "Засвідчу я",
+            "name_en": "I’ve Witnessed it",
+            "musician": "Passion",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/7306.jpg",
+
+            "originalKey": "Db",
+            "key": "Db",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        },
+        {
+            "song_id": "4",
+            "name": "Ісус Ти переміг",
+            "name_en": "Victory is Yours",
+            "musician": "Bethel Music",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/2171.jpg",
+            
+            "originalKey": "A",
+            "key": "A",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        }
+    ]
+
+ },
+ {
+    "id":       "2",
+    "title":    "Служіння церкви",
+    "location": "Світловодськ",
+    "location_id": "switlowodsk",
+    "date":     "23.03.2025, Нд",
+    "team":     "Bethel Muic",
+    "author":   "Ніка Кайлова",
+    "author_id": "10",
+    "banner": "/images/home_banner.jpg",
+    "list":     [
+        {
+            "song_id": "25",
+            "name": "В Божому домі",
+            "name_en": "House of the Lord",
+            "musician": "Phill Wickham",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/4603.jpg",
+            
+            "originalKey": "Bb",
+            "key": "Bb",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        },
+        {
+            "song_id": "10",
+            "name": "Засвідчу я",
+            "name_en": "I’ve Witnessed it",
+            "musician": "Passion",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/7306.jpg",
+
+            "originalKey": "Db",
+            "key": "Db",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        },
+        {
+            "song_id": "4",
+            "name": "Ісус Ти переміг",
+            "name_en": "Victory is Yours",
+            "musician": "Bethel Music",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/2171.jpg",
+            
+            "originalKey": "A",
+            "key": "A",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        }
+    ]
+
+ },
+ {
+    "id":       "3",
+    "title":    "Святкове служіння церкви",
+    "location": "Київ",
+    "location_id": "kyiv",
+    "date":     "16.03.2025, Нд",
+    "team":     "Elevation Worship",
+    "author":   "Ніка Кайлова",
+    "author_id": "10",
+    "banner": "/images/piano.jpg",
+    "list":     [
+        {
+            "song_id": "25",
+            "name": "В Божому домі",
+            "name_en": "House of the Lord",
+            "musician": "Phill Wickham",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/4603.jpg",
+            
+            "originalKey": "Bb",
+            "key": "Bb",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        },
+        {
+            "song_id": "10",
+            "name": "Засвідчу я",
+            "name_en": "I’ve Witnessed it",
+            "musician": "Passion",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/7306.jpg",
+
+            "originalKey": "Db",
+            "key": "Db",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        },
+        {
+            "song_id": "4",
+            "name": "Ісус Ти переміг",
+            "name_en": "Victory is Yours",
+            "musician": "Bethel Music",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/2171.jpg",
+            
+            "originalKey": "A",
+            "key": "A",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        }
+    ]
+
+ },
+ {
+    "id":       "4",
+    "title":    "Cлужіння церкви",
+    "location": "Харків",
+    "location_id": "kharkiv",
+    "date":     "09.03.2025, Нд",
+    "team":     "Passion",
+    "author":   "Ніка Кайлова",
+    "author_id": "10",
+    "banner": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcy6itKCNoeO5yVuUE7OW8-DcP8XxR3GTyUg&s",
+    "list":     [
+        {
+            "song_id": "25",
+            "name": "В Божому домі",
+            "name_en": "House of the Lord",
+            "musician": "Phill Wickham",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/4603.jpg",
+            
+            "originalKey": "Bb",
+            "key": "Bb",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        },
+        {
+            "song_id": "10",
+            "name": "Засвідчу я",
+            "name_en": "I’ve Witnessed it",
+            "musician": "Passion",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/7306.jpg",
+
+            "originalKey": "Db",
+            "key": "Db",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        },
+        {
+            "song_id": "4",
+            "name": "Ісус Ти переміг",
+            "name_en": "Victory is Yours",
+            "musician": "Bethel Music",
+            "banner": "https://mtracks.azureedge.net/public/images/albums/568/2171.jpg",
+            
+            "originalKey": "A",
+            "key": "A",
+            "solist": "Ніка Кайлова",
+            "solist_id": "10"
+        }
+    ]
+
+ }
+]
