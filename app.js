@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 
 const listsRouter = require("./routes/api/lists");
+const songsRouter = require("./routes/api/songs");
 
 
 const formatsLogger = app.get('env') === "development" ? "dev" : " short";
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 
+app.use("/api/songs", songsRouter);
 app.use("/api/lists", listsRouter);
 
 app.use((req, res) => {
