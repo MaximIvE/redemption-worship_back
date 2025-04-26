@@ -2,6 +2,7 @@ const def={
     400: "Bad request",
     404: "Not Found",
     409: "Conflicting Request",
+    500: "Internal Server Error"
 }
 
 
