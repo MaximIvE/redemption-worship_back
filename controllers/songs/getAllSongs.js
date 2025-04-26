@@ -8,9 +8,10 @@ const actualType = ".docx";
 
 
 const getAll = async (req, res) => {
+    console.log("api/songs")
     const { lang = "all" } = req.query;
     const drive = getDrive();
-
+    
     const result = await drive.files.list({
         q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx' and name contains '.docx'`,
         fields: 'files(id, name)',
