@@ -1,9 +1,20 @@
+const { getGoogleDrive } = require("../../connect");
+const FOLDER_ID = process.env.GOOGLE_LYRICS_ID;
+
+const searchSettings = {
+  q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx' and name contains '.docx'`,
+  fields: 'files(id, name)',
+};
 
 const getAll = async (req, res) => {
-  const newData = {message: "api/songs"}
-    console.log("api/songs")
+  console.log("api/songs");
 
-    res.json(newData);
+  const googleDrive = getGoogleDrive();
+  const result = await googleDrive.files.list(searchSettings);
+  
+  const newData = result.data.files;  
+
+  res.json(newData);
 }
 
 module.exports = getAll;
