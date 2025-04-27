@@ -9,14 +9,12 @@ const getAll = async (req, res) => {
   const { lang = "all" } = req.query;
 
   const googleDrive = getGoogleDrive();
-
   const result = await googleDrive.files.list({
     q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx' and name contains '.docx'`,
     fields: 'files(id, name)',
   });
 
   const data = result.data.files;  
-
   if (!data || !data.length) throw RequestError(500);
   const newData = data.map(song => separateOfName(song)).filter(song => (lang==='all'? true : song.textLang === lang))
 
