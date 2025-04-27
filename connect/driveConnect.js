@@ -9,7 +9,7 @@ async function initDrive(){
     const auth = new google.auth.GoogleAuth({
       credentials: {
         client_email: GOOGLE_CLIENT_EMAIL,
-        private_key: GOOGLE_PRIVATE_KEY,
+        private_key: GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
       },
       projectId: GOOGLE_PROJECT_ID,
       scopes: [GOOGLE_SCOPES],
