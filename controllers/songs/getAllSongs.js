@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { getGoogleDrive } = require("../../connect");
 const FOLDER_ID = process.env.GOOGLE_LYRICS_ID;
 
@@ -8,7 +9,7 @@ const getAll = async (req, res) => {
   const googleDrive = getGoogleDrive();
   console.log("past drive");
   const result = await googleDrive.files.list({
-    q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx' and name contains '.docx'`,
+    q: `'${FOLDER_ID}' in parents and trashed = false`,
     fields: 'files(id, name)',
   });
   console.log("past result");
