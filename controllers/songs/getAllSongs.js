@@ -10,10 +10,11 @@ const getAll = async (req, res) => {
   console.log("api/songs");
 
   const googleDrive = getGoogleDrive();
+  console.log("past drive");
   const result = await googleDrive.files.list(searchSettings);
-  
+  console.log("past result");
   const data = result.data.files;  
-
+  console.log("past data");
   res.json(data);
 }
 
