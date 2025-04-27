@@ -12,9 +12,9 @@ const getAll = async (req, res) => {
   const googleDrive = getGoogleDrive();
   const result = await googleDrive.files.list(searchSettings);
   
-  const newData = result.data.files;  
+  const data = result.data.files;  
 
-  res.json(newData);
+  res.json(data);
 }
 
 module.exports = getAll;
