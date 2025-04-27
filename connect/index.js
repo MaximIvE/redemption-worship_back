@@ -1,5 +1,7 @@
-const getDrive = require("./driveConnect");
+const { initDrive, getGoogleDrive } = require("./driveConnect");
+
 
 module.exports = {
-    getDrive,
-}
+    initDrive,
+    getGoogleDrive
+};
