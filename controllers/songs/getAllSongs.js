@@ -9,7 +9,7 @@ const getAll = async (req, res) => {
   const googleDrive = getGoogleDrive();
   console.log("past drive");
   const result = await googleDrive.files.list({
-    q: `'${FOLDER_ID}' in parents and trashed = false`,
+    q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx'`,
     fields: 'files(id, name)',
   });
   console.log("past result");
