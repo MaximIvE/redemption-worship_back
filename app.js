@@ -3,8 +3,8 @@ const logger = require("morgan");
 const app = express();
 const cors = require("cors");
 
-const listsRouter = require("./routes/api/lists");
 const songsRouter = require("./routes/api/songs");
+const listsRouter = require("./routes/api/lists");
 
 
 const formatsLogger = app.get('env') === "development" ? "dev" : " short";
