@@ -3,8 +3,6 @@ const mammoth = require('mammoth');
 const { separateSong } = require("../../helpers");
 
 const getById = async (req, res) => {
-    console.log("api/songs/id");
-
     const googleDrive = getGoogleDrive();
     const id = req.params.id;
       
@@ -16,6 +14,7 @@ const getById = async (req, res) => {
 
     const buffer = Buffer.from(response.data);
     const { value: text } = await mammoth.extractRawText({ buffer });
+    // const { value: html } = await mammoth.convertToHtml({ buffer });
     
     const songText = separateSong(text);
     res.json(songText);
