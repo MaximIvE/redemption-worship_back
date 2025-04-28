@@ -13,12 +13,12 @@ const getHeader = lines => {
 }
 
 const getSongContent = lyrics => {
-
+    const titleReg = /^[0-9]?[A-ZА-ЯІЇЄҐЁЪЬ0-9 xXХх:\t]*$/;
     const content = [];
         let title = "";
         let text = "";
     lyrics.forEach(line => {
-        const isTitle = line.includes(":");
+        const isTitle = titleReg.test(line);
         if (isTitle){
             if(title) {content.push({title, text})};
             title = line.replace(":", "").trim();
@@ -28,6 +28,8 @@ const getSongContent = lyrics => {
             text = text + br + line;
         }
     });
+
+    if (title && !text) content.push({title, text});
 
     return content;
 };
