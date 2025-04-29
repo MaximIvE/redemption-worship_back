@@ -5,7 +5,6 @@ const FOLDER_ID = process.env.GOOGLE_LYRICS_ID;
 
 
 const getAll = async (req, res) => {
-  console.log("api/songs");
   const { lang = "all" } = req.query;
   if(lang !== "ukr" && lang !== "rus" && lang !== "all") throw RequestError(400, "Bad request. The parameter can only be one from the list: 'rus', 'ukr', 'all'");
 
