@@ -1,34 +1,79 @@
 const { Schema, model } = require('mongoose');
 
-const timeSigReg = /^\d{1,2}\/\d{1,2}$/;
-const bpmReg = /^\d{1,3},\d{2}$/;
 
 const lyricsSchema = new Schema({
-  title: { type: String },
+  title: { type: String},
   text: { type: String },
   chords: { type: String }
 }, { _id: false });
+
+const metaSchema = new Schema({
+  key: { type: String },
+  firstChord: { type: String },
+  bpm: { type: String },
+  timeSig: { type: String },
+  songMap: {type: [String], enum: ['intro', 'verse', 'chorus', 'bridge', 'outro'], default: [] }
+}, { _id: false });
+
+
+    const mediaItemSchema = new Schema({
+      rating: {type: Number, required: true},
+      source: {type: String, required: true},
+      tag: {type: String, required: true},
+      artist: {type: String, required: true}
+    }, { _id: false });
+
+    const mediaTutorialSchema = new Schema({
+      // type: {type: String, enum: ['intro', 'verse', 'chorus', 'bridge', 'outro']},
+      type: {type: String},
+      list: {
+        type: [{
+          rating: {type: Number, required: true},
+          source: {type: String, required: true}
+        }],
+        default: []
+      }
+    }, { _id: false });
+
+    const mediaKeySchema = new Schema({
+      type: { 
+        audio: {type: [mediaItemSchema], default: []},
+        video: {type: [mediaItemSchema], default: []},
+        tutorials: {type: [mediaTutorialSchema]}
+      }
+    },{ _id: false })
+
+
+// const mediaSchema = new Schema({
+//   original: { type: mediaKeySchema, required: true },
+// }, { _id: false });
 
 const songSchema = new Schema({
   song_id: { type: String, required: true, unique: true },
   title: { type: String, required: true },
   title_en: { type: String, required: true },
   language: { type: String, required: true, enum: ['ukr', 'rus'] },
-  artist: { type: String, required: true },
+  artist: { type: String },
+
   meta: {
-    key: { type: String, required: true },
-    firstChord: String,
-    bpm: { type: String, required: true, match: [bpmReg, 'Invalid bpm signature format (use e.g. "68,50, "137,00")'] },
-    timeSig: { type: String, required: true, match: [timeSigReg, 'Invalid time signature format (use e.g. "4/4", "6/8")'] }
+    type: metaSchema,
+    required: true
   },
+
   lyrics: {
     type: [lyricsSchema],
-    required: true,
-    validate: [arr => arr.length > 0, 'At least one lyrics item is required']
+    required: true
+  },
+
+  media: {
+    type: Map,
+    of: mediaKeySchema
   },
   
-  info: String,
-  banner: String
-});
+  info: { type: String },
+  banner: { type: String }
+}, { versionKey: false });
 
-module.exports = model('song', songSchema);
+const Song = model('song', songSchema);
+
+module.exports = Song;
