@@ -1,12 +1,14 @@
 const ctrlWrapper = require("./ctrlWrapper");
-const separateSong = require("./parseSong");
+const handleSaveErrors = require("./handleSaveErrors");
+const separateSong = require("./sync/parseSong");
 const RequestError = require("./requestError");
-const separateOfName = require("./separateOfName");
+const separateOfNames = require("./sync/separateOfNames");
 
 
 module.exports = {
     ctrlWrapper,
     RequestError,
-    separateOfName,
-    separateSong
+    separateOfNames,
+    separateSong,
+    handleSaveErrors
 }

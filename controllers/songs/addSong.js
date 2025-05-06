@@ -1,5 +1,6 @@
 const { RequestError } = require("../../helpers");
-const Song = require("../../models/song");
+const { Song } = require("../../models/song");
+
 
 //Валідація тіла запиту при додаванні / зміні
 const add = async(req, res) => {

@@ -1,9 +1,8 @@
 const cloudinaryConnect = require("./cloudinary");
-const { initDrive, getGoogleDrive } = require("./driveConnect");
+const initDrive = require("./driveConnect");
 
 
 module.exports = {
     initDrive,
-    getGoogleDrive,
     cloudinaryConnect
 };

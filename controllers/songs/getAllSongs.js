@@ -1,24 +1,13 @@
-require('dotenv').config();
-const { getGoogleDrive } = require("../../connect");
-const { separateOfName, RequestError } = require('../../helpers');
-const FOLDER_ID = process.env.GOOGLE_LYRICS_ID;
+const { RequestError } = require("../../helpers");
+const {Song} = require("../../models/song");
 
 
 const getAll = async (req, res) => {
-  const { lang = "all" } = req.query;
-  if(lang !== "ukr" && lang !== "rus" && lang !== "all") throw RequestError(400, "Bad request. The parameter can only be one from the list: 'rus', 'ukr', 'all'");
 
-  const googleDrive = getGoogleDrive();
-  const result = await googleDrive.files.list({
-    q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx' and name contains '.docx'`,
-    fields: 'files(id, name)',
-  });
+const data = await Song.find();
+if(!data) throw RequestError(404);
 
-  const data = result.data.files;  
-  if (!data || !data.length) throw RequestError(500);
-  const newData = data.map(song => separateOfName(song)).filter(song => (lang==='all'? true : song.textLang === lang))
-
-  res.json(newData);
+res.json(data)
 }
 
 module.exports = getAll;

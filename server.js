@@ -3,11 +3,10 @@ const { initDrive, cloudinaryConnect } = require('./connect');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-
 const { MONGO_DB_HOST, PORT = 4000 } = process.env;
 
 function startServer(){
-    initDrive();
+    
     mongoose.connect(MONGO_DB_HOST)
         .then(() => {
             console.log("Database MongoDB connect success");
