@@ -5,11 +5,15 @@ const addMany = async (req, res) => {
 const data = req.body;
 if(!data || data.length === 0) throw RequestError(400); 
 
-const addedSongs = await Song.insertMany(data, { ordered: false });
-if(!addedSongs || addedSongs.length === 0) throw RequestError(500, "failed to add 0 songs"); 
+try {
+    const addedSongs = await Song.insertMany(data, { ordered: false });
 
-
-res.status(201).json(addedSongs);
+    res.status(201).json(addedSongs);
+} catch (error) {
+    const {name, code, message} = error;
+    error.status = (name === "MongoServerError" && code === 11000) ? 409 : 400;
+    throw RequestError(error.status, message); 
 }
+};
 
 module.exports = addMany;
