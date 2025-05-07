@@ -1,10 +1,10 @@
+require('dotenv').config();
 const {google} = require('googleapis');
-const { RequestError } = require('../helpers');
+
 
 const {GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_PROJECT_ID, GOOGLE_SCOPES} = process.env;
 
-let googleDrive = null;
-async function initDrive(){
+function initDrive(){
   try {
     const auth = new google.auth.GoogleAuth({
       credentials: {
@@ -14,16 +14,11 @@ async function initDrive(){
       projectId: GOOGLE_PROJECT_ID,
       scopes: [GOOGLE_SCOPES],
     });
-    googleDrive = google.drive({ version: 'v3', auth });
-    console.log('Google drive is active');
+
+    return googleDrive = google.drive({ version: 'v3', auth });
   } catch (error) {
-    console.log("GoogleDrive initialization error:", error)
+    console.log("GoogleDrive initialization error:", error);
   }
 };
- 
-function getGoogleDrive(){
-    if(!googleDrive) throw RequestError(500, "");
-    return googleDrive;
-}
 
-module.exports = {initDrive, getGoogleDrive};
+module.exports = initDrive;
