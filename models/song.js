@@ -101,6 +101,7 @@ const createSongSchema = Joi.object({
   language: Joi.string().required().valid('ukr', 'rus')
 });
 
+const createManySongsSchema = Joi.array().items(createSongSchema);
 
 const updateSongSchema = Joi.object({
   title: Joi.string(),
@@ -134,6 +135,8 @@ const updateSongSchema = Joi.object({
 
 const JoiSongs = {
   createSongSchema,
+  createManySongsSchema,
+  
   updateSongSchema
 }
 

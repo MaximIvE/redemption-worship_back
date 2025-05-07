@@ -1,5 +1,6 @@
-const syncAndAddSongs = require("./syncSongs");
+const getNewSongs = require("./getNewSongs");
+
 
 module.exports = {
-    syncAndAddSongs,
+    getNewSongs,
 }
