@@ -64,6 +64,7 @@ const songSchema = new Schema({
 
 
 songSchema.post('save', handleSaveErrors);
+songSchema.post('insertMany', handleSaveErrors);
 
 const Song = model('song', songSchema);
 
