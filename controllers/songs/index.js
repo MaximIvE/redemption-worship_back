@@ -1,12 +1,14 @@
 const addMany = require("./addManySongs");
-const add = require("./addSong");
+const addOne = require("./addSong");
 const getAll = require("./getAllSongs");
 const getById = require("./getSongById");
+const updateOne = require('./updateOne');
 
 
 module.exports = {
     getAll,
     getById,
-    add,
+    addOne,
     addMany,
+    updateOne,
 };

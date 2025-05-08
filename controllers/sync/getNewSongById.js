@@ -1,9 +1,11 @@
-const { getGoogleDrive } = require("../../connect");
 const mammoth = require('mammoth');
-const { separateSong } = require("../../helpers");
+const { initDrive } = require('../../connect');
+const { separateSong } = require('../../helpers');
+
+const googleDrive = initDrive();
+
 
 const getNewById = async (req, res) => {
-    const googleDrive = getGoogleDrive();
     const id = req.params.id;
       
     // Отримуємо файл як потік даних
@@ -14,8 +16,7 @@ const getNewById = async (req, res) => {
 
     const buffer = Buffer.from(response.data);
     const { value: text } = await mammoth.extractRawText({ buffer });
-    // const { value: html } = await mammoth.convertToHtml({ buffer });
-    
+
     const songText = separateSong(text);
     res.json(songText);
 

@@ -11,7 +11,7 @@ router.get("/", ctrlWrapper(ctrls.getAll));
 router.get("/:id", ctrlWrapper(ctrls.getById));
 validateBody
 router.post("/", validateBody(JoiSongs.createManySongsSchema), ctrlWrapper(ctrls.addMany));
-router.post("/one", validateBody(JoiSongs.createSongSchema), ctrlWrapper(ctrls.add));
-// router.put("/:id", validateBody(addSongSchema), ctrlWrapper(ctrls.updateById));
+router.post("/one", validateBody(JoiSongs.createSongSchema), ctrlWrapper(ctrls.addOne));
+router.put("/:id", validateBody(JoiSongs.updateSongSchema), ctrlWrapper(ctrls.updateOne));
 
 module.exports = router;

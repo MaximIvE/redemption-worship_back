@@ -1,24 +1,15 @@
-const { getGoogleDrive } = require("../../connect");
-const mammoth = require('mammoth');
-const { separateSong } = require("../../helpers");
+const { RequestError } = require('../../helpers');
+const {Song} = require('../../models/song');
+
 
 const getById = async (req, res) => {
-    const googleDrive = getGoogleDrive();
-    const id = req.params.id;
+    const song_id = req.params.id;
       
-    // Отримуємо файл як потік даних
-    const response = await googleDrive.files.get(
-    { fileId: id, alt: 'media' },
-    { responseType: 'arraybuffer' }
-    );
+    const data = await Song.findOne({song_id});
 
-    const buffer = Buffer.from(response.data);
-    const { value: text } = await mammoth.extractRawText({ buffer });
-    // const { value: html } = await mammoth.convertToHtml({ buffer });
-    
-    const songText = separateSong(text);
-    res.json(songText);
+    if (!data) throw RequestError(404);
 
+    res.json(data);
 };
 
 module.exports = getById;
