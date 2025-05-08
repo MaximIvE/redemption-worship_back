@@ -1,7 +1,10 @@
 // Повертає нові пісні з Драйва, яких немає в Монго
-
+require('dotenv').config();
+const { initDrive } = require("../../connect");
 const { separateOfNames, RequestError } = require("../../helpers");
-const { getAllLyrics, getAllSongs } = require("../_microcontrollers");
+const {Song} = require('../../models/song');
+
+const FOLDER_ID = process.env.GOOGLE_LYRICS_ID;
 
 
 const sortByTitle = (obj) => obj.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase(), 'ru', { sensitivity: 'base' }));
@@ -9,12 +12,20 @@ const sortByTitle = (obj) => obj.sort((a, b) => a.title.toLowerCase().localeComp
 const getNewSongs = async (req, res) => {
     let uniqueSortSongs = [];
 
-    const driveSongs = await getAllLyrics();
+    //Отримуємо дані з Гугл Диска
+    const googleDrive = initDrive();
+    const result = await googleDrive.files.list({
+        q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx' and name contains '.docx'`,
+        fields: 'files(id, name)',
+      });
+    const driveSongs = result.data.files;
+
+    // const driveSongs = await getAllLyrics();
     if(!driveSongs || driveSongs.length === 0) throw RequestError(404, "data from drive not found");
     const separateDriveSongs = separateOfNames(driveSongs);
     
-    // БД може бути порожньою, тоді даних не отримаємо
-    const mongoSongs = await getAllSongs();
+    // Отримуємо дані з Монго
+    const mongoSongs = await Song.find().select('song_id title -_id');
 
     const pattern = (mongoSongs && mongoSongs.length > 0) ? "compare and add" : "add all";
     switch (pattern) {

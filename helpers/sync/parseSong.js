@@ -1,15 +1,15 @@
 
 const getHeader = lines => {
-    const names = lines[0].split(' | ');
-        const name = names[0];
-        const name_en = names[1] ? names[1] : "";
+    const titles = lines[0].split(' | ');
+        const title = titles[0];
+        const title_en = titles[1] ? titles[1] : "";
     const artist = lines[1];
     const keys = lines[2].split(' ').map(line => line.trim()).filter(line => line !== '');
         const key = keys[1];
         const bpm = keys[3];
         const timeSig = keys[6];
     
-        return {name, name_en, artist, key:{key, bpm, timeSig}}
+        return {title, title_en, artist, meta:{key, bpm, timeSig}}
 }
 
 const getSongContent = lyrics => {
@@ -29,7 +29,7 @@ const getSongContent = lyrics => {
         }
     });
 
-    if (title && !text) content.push({title, text});
+    if (title) content.push({title, text});
 
     return content;
 };
@@ -41,7 +41,7 @@ const separateSong = (lines) => {
     const lyrics = text.slice(3);
     const content = getSongContent(lyrics);
     
-    return {...header, content}
+    return {...header, lyrics: content}
 };
 
 module.exports = separateSong;
