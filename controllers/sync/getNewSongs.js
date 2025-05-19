@@ -1,13 +1,10 @@
 // Повертає нові пісні з Драйва, яких немає в Монго
 require('dotenv').config();
 const { initDrive } = require("../../connect");
-const { separateOfNames, RequestError } = require("../../helpers");
+const { sortByTitle, separateOfNames, RequestError } = require("../../helpers");
 const {Song} = require('../../models/song');
 
 const FOLDER_ID = process.env.GOOGLE_LYRICS_ID;
-
-
-const sortByTitle = (obj) => obj.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase(), 'ru', { sensitivity: 'base' }));
 
 const getNewSongs = async (req, res) => {
     let uniqueSortSongs = [];

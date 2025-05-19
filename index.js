@@ -1,1 +1,0 @@
-console.log("index.js -> Welcome to Node.JS");

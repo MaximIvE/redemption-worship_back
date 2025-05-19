@@ -9,7 +9,7 @@ async function cloudinaryConnect() {
         api_key: CLOUD_API_KEY, 
         api_secret: CLOUD_API_SECRET
     }); 
-    console.log()
+    
 };
 
 module.exports = cloudinaryConnect;
