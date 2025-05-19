@@ -19,6 +19,11 @@ const metaSchema = new Schema({
   songMap: {type: [String], enum: ['intro', 'verse', 'chorus', 'bridge', 'outro'], default: [] }
 }, { _id: false });
 
+const bannerSchema = new Schema({
+  _1x: {type: String, default: ""},
+  _2x: {type: String, default: ""}
+}, { _id: false })
+
 
     const mediaItemSchema = new Schema({
       rating: {type: Number, required: true},
@@ -59,7 +64,7 @@ const songSchema = new Schema({
   media: {type: Map, of: mediaKeySchema },
   
   info: { type: String, default: "" },
-  banner: { type: String, default: "" }
+  banner: {type: bannerSchema}
 }, { versionKey: false, timestamps: true});
 
 
@@ -130,7 +135,10 @@ const updateSongSchema = Joi.object({
     mediaKeySchemaJoi
     ),
   info: Joi.string(),
-  banner: Joi.string().uri()
+  banner: Joi.object({
+    _1x: Joi.string(),
+    _2x: Joi.string()
+  })
 });
 
 
