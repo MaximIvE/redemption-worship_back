@@ -1,5 +1,4 @@
 const app = require('./app');
-const { initDrive, cloudinaryConnect } = require('./connect');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
