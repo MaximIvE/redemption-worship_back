@@ -3,6 +3,7 @@ const { Quote } = require("../../models/quote");
 
 
 const addQuote = async(req, res) => {
+    
     const result = await Quote.create(req.body);
     if(!result) throw RequestError(500);
 

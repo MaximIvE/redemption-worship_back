@@ -6,9 +6,9 @@ const Joi = require("joi");
 // Mongoose Schema
 const quoteSchema = new Schema({
     verse:{type: String, required: true},
-    place: {type: String, required: true},
+    place: {type: String, required: true, unique: true},
     banner: {type: String, required: true},
-    week: {type: Number, default: 0 }
+    week: {type: Number, min: 1, unique: true },
 },{ versionKey: false, timestamps: true});
 
 quoteSchema.post('save', handleSaveErrors);
@@ -21,14 +21,14 @@ const createQuoteSchema = Joi.object({
     verse: Joi.string().required(),
     place: Joi.string().required(),
     banner: Joi.string().required(),
-    week: Joi.number().min(0)
+    week: Joi.number().min(1),
 });
 
 const updateQuoteSchema = Joi.object({
     verse: Joi.string(),
     place: Joi.string(),
     banner: Joi.string(),
-    week: Joi.number().min(0)
+    week: Joi.number().min(1),
 });
 
 const JoiQuote = {
