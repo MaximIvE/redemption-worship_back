@@ -1,8 +1,8 @@
-const getCurrentQuote = require("./qetCurrentQuote") ;
+const getQuote = require("./qetQuote") ;
 const addQuote = require("./addQuote");
 
 module.exports = {
-    getCurrentQuote,
+    getQuote,
     addQuote,
 
 }
