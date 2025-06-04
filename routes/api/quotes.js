@@ -6,7 +6,7 @@ const ctrls = require("../../controllers/quotes");
 
 const router = express.Router();
 
-router.get("/current", ctrlWrapper(ctrls.getCurrentQuote));
+router.get("/:week", ctrlWrapper(ctrls.getQuote));
 router.post("/", validateBody(JoiQuote.createQuoteSchema), ctrlWrapper(ctrls.addQuote))
 
 module.exports = router;

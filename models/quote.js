@@ -8,8 +8,8 @@ const quoteSchema = new Schema({
     verse:{type: String, required: true},
     place: {type: String, required: true, unique: true},
     banner: {type: String, required: true},
-    week: {type: Number, min: 1, unique: true },
-},{ versionKey: false, timestamps: true});
+    week: {type: Number, min: 1, unique: true }
+},{ versionKey: false });
 
 quoteSchema.post('save', handleSaveErrors);
 
