@@ -3,6 +3,7 @@ const logger = require("morgan");
 const app = express();
 const cors = require("cors");
 
+const quoteRouter = require("./routes/api/quotes");
 const songsRouter = require("./routes/api/songs");
 const listsRouter = require("./routes/api/lists");
 const driveRouter = require("./routes/api/sync")
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 
+app.use("/api/quotes", quoteRouter);
 app.use("/api/songs", songsRouter);
 // app.use("/api/drive", songsRouter);
 app.use("/api/lists", listsRouter);
