@@ -1,4 +1,5 @@
 const mammoth = require('mammoth');
+const {google} = require('googleapis');
 const { initDrive } = require('../../connect');
 const { separateSong } = require('../../helpers');
 
@@ -16,7 +17,7 @@ const getNewById = async (req, res) => {
 
     const buffer = Buffer.from(response.data);
     const { value: text } = await mammoth.extractRawText({ buffer });
-
+    
     const songText = separateSong(text);
     res.json(songText);
 

@@ -11,13 +11,14 @@ const getNewSongs = async (req, res) => {
 
     //Отримуємо дані з Гугл Диска
     const googleDrive = initDrive();
+
     const result = await googleDrive.files.list({
-        q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx' and name contains '.docx'`,
-        fields: 'files(id, name)',
+        // q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx' and name contains '.docx'`,
+        q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН'`,
+        fields: 'files(id, name)'
       });
     const driveSongs = result.data.files;
 
-    // const driveSongs = await getAllLyrics();
     if(!driveSongs || driveSongs.length === 0) throw RequestError(404, "data from drive not found");
     const separateDriveSongs = separateOfNames(driveSongs);
     
