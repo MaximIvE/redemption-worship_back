@@ -35,7 +35,7 @@ const getSongContent = lyrics => {
 };
 
 const separateSong = (lines) => {
-    const text = lines.split('\n\n').map(line => line.trim()).filter(line => line !== '');
+    const text = lines.split('\n').map(line => line.trim()).filter(line => line !== '');
     const header = getHeader(text);
 
     const lyrics = text.slice(3);

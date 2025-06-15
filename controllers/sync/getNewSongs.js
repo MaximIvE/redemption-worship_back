@@ -1,23 +1,26 @@
 // Повертає нові пісні з Драйва, яких немає в Монго
 require('dotenv').config();
-const { initDrive } = require("../../connect");
+const {google} = require('googleapis');
 const { sortByTitle, separateOfNames, RequestError } = require("../../helpers");
 const {Song} = require('../../models/song');
+const { driveAuth } = require('../../connect');
 
 const FOLDER_ID = process.env.GOOGLE_LYRICS_ID;
 
 const getNewSongs = async (req, res) => {
     let uniqueSortSongs = [];
 
+    const auth = driveAuth();
     //Отримуємо дані з Гугл Диска
-    const googleDrive = initDrive();
+    const googleDrive = google.drive({ version: 'v3', auth });
+
     const result = await googleDrive.files.list({
-        q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx' and name contains '.docx'`,
-        fields: 'files(id, name)',
+        // q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН.docx' and name contains '.docx'`,
+        q: `'${FOLDER_ID}' in parents and trashed = false and name != 'ШАБЛОН'`,
+        fields: 'files(id, name)'
       });
     const driveSongs = result.data.files;
 
-    // const driveSongs = await getAllLyrics();
     if(!driveSongs || driveSongs.length === 0) throw RequestError(404, "data from drive not found");
     const separateDriveSongs = separateOfNames(driveSongs);
     

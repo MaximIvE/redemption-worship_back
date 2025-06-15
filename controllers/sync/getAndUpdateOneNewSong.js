@@ -1,30 +1,26 @@
 const mammoth = require('mammoth');
-const { initDrive } = require('../../connect');
-const { separateSong } = require('../../helpers');
+const { initDrive, driveAuth } = require('../../connect');
+const { separateSong, parseSong } = require('../../helpers');
 const {Song} = require('../../models/song');
+const { google } = require('googleapis');
 
-const googleDrive = initDrive();
+const googleAuth = driveAuth();
 
 
 const getNewSongWithDrive = async (id) => {
+    const docs = google.docs({version: 'v1', auth: googleAuth});
+    const result = await docs.documents.get({documentId: id});
 
-    // Отримуємо файл як потік даних
-    const response = await googleDrive.files.get(
-    { fileId: id, alt: 'media' },
-    { responseType: 'arraybuffer' }
-    );
+    const content = result.data.body.content;
+    const songText = parseSong(content);
+    const songObj = separateSong(songText);
 
-    const buffer = Buffer.from(response.data);
-    const { value: text } = await mammoth.extractRawText({ buffer });
-
-    const songText = separateSong(text);
-
-    return songText;
+    return songObj;
 };
 
 const getAllSongsIdWithMongo = async () => {
     const mongoSongs = await Song.find().select('song_id title -_id');
-
+    
     return mongoSongs;
 };
 

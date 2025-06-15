@@ -4,7 +4,7 @@ const {google} = require('googleapis');
 
 const {GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_PROJECT_ID, GOOGLE_SCOPES} = process.env;
 
-function initDrive(){
+function driveAuth(){
   try {
     const auth = new google.auth.GoogleAuth({
       credentials: {
@@ -15,11 +15,10 @@ function initDrive(){
       scopes: [GOOGLE_SCOPES],
     });
 
-    const googleDrive = google.drive({ version: 'v3', auth });
-    return googleDrive;
+    return auth;
   } catch (error) {
     console.log("GoogleDrive initialization error:", error);
   }
 };
 
-module.exports = initDrive;
+module.exports = driveAuth;
