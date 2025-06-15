@@ -1,5 +1,5 @@
 const mammoth = require('mammoth');
-const { initDrive, driveAuth } = require('../../connect');
+const { driveAuth } = require('../../connect');
 const { separateSong, parseSong } = require('../../helpers');
 const {Song} = require('../../models/song');
 const { google } = require('googleapis');
