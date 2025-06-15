@@ -1,6 +1,5 @@
 const {google} = require('googleapis');
 const { driveAuth } = require('../../connect');
-// const content = require('../../public/song.json');
 const { parseSong, separateSong } = require('../../helpers');
 
 
@@ -12,9 +11,9 @@ const getNewById = async (req, res) => {
     
     const content = result.data.body.content;
     const songText = parseSong(content);
-    const song = separateSong(songText);
+    const songObj = separateSong(songText);
 
-    res.json(song);
+    res.json(songObj);
 };
 
 module.exports = getNewById;
