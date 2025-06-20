@@ -1,0 +1,20 @@
+name: Enforce Pull Request from develop only
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  restrict-pr-source:
+    name: Check PR source branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if PR is not from 'develop'
+        run: |
+          echo "Checking if PR comes from 'develop' branch..."
+          if [[ "${{ github.head_ref }}" != "develop" ]]; then
+            echo "❌ Pull requests to 'main' are only allowed from 'develop'."
+            exit 1
+          fi
+          echo "✅ Pull request is from 'develop'. Allowed."
