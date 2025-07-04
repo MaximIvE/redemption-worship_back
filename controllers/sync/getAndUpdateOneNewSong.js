@@ -6,13 +6,22 @@ const { google } = require('googleapis');
 
 const googleAuth = driveAuth();
 
+const getLanguage = (text) => {
+    const uaOnlyRegex = /[ґҐіІїЇєЄ]/;
+    const ruOnlyRegex = /[ёЁъЪыЫэЭ]/;
+
+    if (uaOnlyRegex.test(text)) return "ukr";
+    if (ruOnlyRegex.test(text)) return "rus";
+    return "";
+}
+
 
 const getNewSongWithDrive = async (id) => {
     const docs = google.docs({version: 'v1', auth: googleAuth});
     const result = await docs.documents.get({documentId: id});
 
     const content = result.data.body.content;
-    const songText = parseSong(content);
+    const songText = parseSong(content); 
     const songObj = separateSong(songText);
 
     return songObj;
@@ -37,7 +46,14 @@ const updatedSong = await Song.findOneAndUpdate(
 
 const syncOneSong = async(song_id) => {
     const song = await getNewSongWithDrive(song_id);
-    const updatedData = await updateOneSongByMongo(song_id, song);
+    // Оновлюємо пісню
+    const  updatedData = await updateOneSongByMongo(song_id, song);
+    // Якщо її немає, то записуємо нову
+    if(updatedData === null) {
+        const language = getLanguage(song.lyrics?.[0].text || song.title);
+        const createdSong =  await Song.create({song_id, language, ...song});
+        return createdSong;
+    };
 
     return updatedData;
 }
