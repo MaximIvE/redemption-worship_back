@@ -9,7 +9,7 @@ const lyricsSchema = new Schema({
   title: { type: String},
   lines: {type: [{
     text: { type: String },
-    chords: { type: String }
+    chords: { type: String, default: "" }
     }]
     }
 }, { _id: false });

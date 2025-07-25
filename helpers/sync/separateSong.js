@@ -20,7 +20,7 @@ const getSongContent = lyrics => {
     lyrics.forEach(line => {
         const isTitle = titleReg.test(line);
         if (isTitle){
-            if(title) {content.push({title, lines: text.map(t => {return{text: t, chords: ""}})})};
+            if(title) {content.push({title, lines: text.map(t => {return{text: t}})})};
             title = line.replace(":", "").trim();
             text = [];
         }else{
@@ -28,7 +28,7 @@ const getSongContent = lyrics => {
         }
     });
 
-    if (title) {content.push({title, lines: text.map(t => {return{text: t, chords: ""}})})};
+    if (title) {content.push({title, lines: text.map(t => {return{text: t}})})};
 
     return content;
 };
