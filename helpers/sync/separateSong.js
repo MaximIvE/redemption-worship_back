@@ -16,20 +16,19 @@ const getSongContent = lyrics => {
     const titleReg = /^[0-9]?[A-ZА-ЯІЇЄҐЁЪЬ0-9 xXХх:\t]*$/;
     const content = [];
         let title = "";
-        let text = "";
+        let text = [];
     lyrics.forEach(line => {
         const isTitle = titleReg.test(line);
         if (isTitle){
-            if(title) {content.push({title, text})};
+            if(title) {content.push({title, lines: text.map(t => {return{text: t, chords: ""}})})};
             title = line.replace(":", "").trim();
-            text = "";
+            text = [];
         }else{
-            const br = text ? "\r\n" : ""
-            text = text + br + line;
+            text.push(line);
         }
     });
 
-    if (title) content.push({title, text});
+    if (title) {content.push({title, lines: text.map(t => {return{text: t, chords: ""}})})};
 
     return content;
 };

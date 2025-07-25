@@ -7,8 +7,11 @@ const timeSigRegExp = /^\d{1,2}\/\d{1,2}$/;
 
 const lyricsSchema = new Schema({
   title: { type: String},
-  text: { type: String },
-  chords: { type: String }
+  lines: {type: [{
+    text: { type: String },
+    chords: { type: String }
+    }]
+    }
 }, { _id: false });
 
 const metaSchema = new Schema({
