@@ -129,6 +129,7 @@ const createSongSchema = Joi.object({
 const createManySongsSchema = Joi.array().items(createSongSchema);
 
 const updateSongSchema = Joi.object({
+  song_id: Joi.string(),
   title: Joi.string(),
   title_en: Joi.string(),
   language: Joi.string().valid('ukr', 'rus'),
@@ -160,12 +161,15 @@ const updateSongSchema = Joi.object({
   })
 });
 
+const updateManySongsSchema = Joi.array().items(updateSongSchema);
+
 
 const JoiSongs = {
   createSongSchema,
   createManySongsSchema,
   
-  updateSongSchema
+  updateSongSchema,
+  updateManySongsSchema
 }
 
 module.exports = Song;

@@ -35,7 +35,8 @@ const getNewSongs = async (req, res) => {
                 const isUniqueTitle = !mongoSongs.some(mongoSong => mongoSong.title === uniqueSong.title);
 
                 const {song_id, title, title_en, language} = uniqueSong;
-                const uniqueTitle = isUniqueTitle ? title : title + "*";
+                // const uniqueTitle = isUniqueTitle ? title : title + "*";
+                const uniqueTitle = isUniqueTitle ? title : title + "";
                 
                 return {song_id, title: uniqueTitle, title_en, language}
             } ));

@@ -12,7 +12,7 @@ const getLanguage = (text) => {
 
     if (uaOnlyRegex.test(text)) return "ukr";
     if (ruOnlyRegex.test(text)) return "rus";
-    return "";
+    return null;
 }
 
 
@@ -34,6 +34,10 @@ const getAllSongsIdWithMongo = async () => {
 };
 
 const updateOneSongByMongo = async(song_id, song) => {
+    console.log(song)
+    const data = await Song.findOne({song_id});
+    
+    console.log(data)
 const updatedSong = await Song.findOneAndUpdate(
     { song_id },
     song,
@@ -49,6 +53,7 @@ const syncOneSong = async(song_id) => {
     // Оновлюємо пісню
     const  updatedData = await updateOneSongByMongo(song_id, song);
     // Якщо її немає, то записуємо нову
+    console.log({updatedData})
     if(updatedData === null) {
         const language = getLanguage(song.lyrics?.[0].text || song.title);
         const createdSong =  await Song.create({song_id, language, ...song});
@@ -58,16 +63,16 @@ const syncOneSong = async(song_id) => {
     return updatedData;
 }
 
-const syncDataSongById = async (req, res) => {
+const syncDataSongById = async (req, res) => {  // торимуємо дані з Гугл диска
     const updatedData = await syncOneSong(req.params.id);
    
     res.status(201).json(updatedData);
 };
 
-const syncManySongs = async song => {
+const syncOneSongCallback = async song => {
 
     try {
-        const result = await syncOneSong(song.song_id);
+        const result = await syncOneSong(song.song_id); // передаємо id пісні з MongoDb
         return result;
     } catch (error) {
         return { song, error }
@@ -83,9 +88,9 @@ const separateResults = results => {
 
 
 const syncAllDataSongs = async(req, res) => {
-    const mongoSongs = await getAllSongsIdWithMongo();
+    const mongoSongs = await getAllSongsIdWithMongo();  //  [{song_id, title}] з Mongodb
 
-    const resultsPromises =  mongoSongs.map(syncManySongs);
+    const resultsPromises =  mongoSongs.map(syncOneSongCallback);
     const results = await Promise.all(resultsPromises);
 
     const data = separateResults(results)

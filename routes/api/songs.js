@@ -12,6 +12,7 @@ router.get("/:id", ctrlWrapper(ctrls.getById));
 
 router.post("/", validateBody(JoiSongs.createManySongsSchema), ctrlWrapper(ctrls.addMany));
 router.post("/:id", validateBody(JoiSongs.createSongSchema), ctrlWrapper(ctrls.addOne));
+router.put("/", validateBody(JoiSongs.updateManySongsSchema), ctrlWrapper(ctrls.updateMany));
 router.put("/:id", validateBody(JoiSongs.updateSongSchema), ctrlWrapper(ctrls.updateOne));
 
 module.exports = router;
