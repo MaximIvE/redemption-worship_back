@@ -25,6 +25,14 @@ const getHeader = lines => {
 const getContent = lyrics => {
     const titleReg = /^[0-9]?[A-ZА-ЯІЇЄҐЁЪЬ0-9 xXХх:\t]*$/;
     const content = [];
+<<<<<<< HEAD
+        let title = "";
+        let text = [];
+    lyrics.forEach(line => {
+        const isTitle = titleReg.test(line);
+        if (isTitle){
+            if(title) {content.push({title, lines: text.map(t => {return{text: t}})})};
+=======
     let title = "";
     let text = "";
 
@@ -37,14 +45,23 @@ const getContent = lyrics => {
         const isTitle = titleReg.test(line);
         if (line && isTitle){
             if(title) setContent();
+>>>>>>> f1e1b4b0e43e2b5ea37db07a0ade733c978afd06
             title = line.replace(":", "").trim();
-            text = "";
+            text = [];
         }else{
+<<<<<<< HEAD
+            text.push(line);
+=======
             text = text + "\r\n"+ line;
+>>>>>>> f1e1b4b0e43e2b5ea37db07a0ade733c978afd06
         }
     })
 
+<<<<<<< HEAD
+    if (title) {content.push({title, lines: text.map(t => {return{text: t}})})};
+=======
     if (title) setContent();
+>>>>>>> f1e1b4b0e43e2b5ea37db07a0ade733c978afd06
 
     return content;
 };

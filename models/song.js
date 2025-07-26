@@ -7,8 +7,11 @@ const timeSigRegExp = /^\d{1,2}\/\d{1,2}$/;
 
 const lyricsSchema = new Schema({
   title: { type: String},
-  text: { type: String },
-  chords: { type: String }
+  lines: {type: [{
+    text: { type: String },
+    chords: { type: String, default: "" }
+    }]
+    }
 }, { _id: false });
 
 const metaSchema = new Schema({
@@ -51,8 +54,8 @@ const bannerSchema = new Schema({
 
 
 const songSchema = new Schema({
-  song_id: { type: String, unique: true },
-  title: { type: String, unique: true },
+  song_id: { type: String, unique: true, required: true },
+  title: { type: String, unique: true, required: true },
   title_en: { type: String, default: ""},
   language: { type: String, enum: ['ukr', 'rus'] },
   artist: { type: String, default: "" },
@@ -101,15 +104,32 @@ const Song = model('song', songSchema);
   
 
 const createSongSchema = Joi.object({
-  song_id: Joi.string().required(),
   title: Joi.string().required().messages({"string.base": 'title should be a type of String', "any.required": "'title' is a required field"}),
   title_en: Joi.string(),
-  language: Joi.string().required().valid('ukr', 'rus')
+  language: Joi.string().valid('ukr', 'rus'),
+  artist: Joi.string(),
+  meta: Joi.object({
+    key: Joi.string(),
+    firstChord: Joi.string().allow(''),
+    bpm: Joi.string().pattern(bpmRegExp)
+      .messages({ "string.pattern.base": "bpm must be in format '137,00' or '68,50'" }),
+    timeSig: Joi.string().pattern(timeSigRegExp)
+      .messages({ "string.pattern.base": "timeSig must be in format '4/4'" }),
+    songMap: Joi.array().default([])
+  }),
+  lyrics: Joi.array().items(
+    Joi.object({
+      title: Joi.string().allow(''),
+      text: Joi.string().allow(''),
+      chords: Joi.string().allow('')
+    })
+  )
 });
 
 const createManySongsSchema = Joi.array().items(createSongSchema);
 
 const updateSongSchema = Joi.object({
+  song_id: Joi.string(),
   title: Joi.string(),
   title_en: Joi.string(),
   language: Joi.string().valid('ukr', 'rus'),
@@ -141,12 +161,15 @@ const updateSongSchema = Joi.object({
   })
 });
 
+const updateManySongsSchema = Joi.array().items(updateSongSchema);
+
 
 const JoiSongs = {
   createSongSchema,
   createManySongsSchema,
   
-  updateSongSchema
+  updateSongSchema,
+  updateManySongsSchema
 }
 
 module.exports = Song;

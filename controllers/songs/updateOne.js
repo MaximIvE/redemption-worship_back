@@ -1,3 +1,4 @@
+const { RequestError } = require("../../helpers");
 const {Song} = require("../../models/song");
 
 const updateOne = async (req, res) => {
@@ -9,6 +10,8 @@ const updatedSong = await Song.findOneAndUpdate(
     song,
     { new: true, runValidators: true }
   );
+
+if(!updatedSong) throw RequestError(404);
 
 res.status(201).json(updatedSong)
 };
