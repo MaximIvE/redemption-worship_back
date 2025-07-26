@@ -11,6 +11,8 @@ const updatedSong = await Song.findOneAndUpdate(
     { new: true, runValidators: true }
   );
 
+if(!updatedSong) throw RequestError(404);
+
 res.status(201).json(updatedSong)
 };
 

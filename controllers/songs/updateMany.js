@@ -16,10 +16,10 @@ const resultsPromises =  songs.map(async song => {
     const findBy = {[key]: song[key]};
     const cleanSong = {...song}
     delete cleanSong[key];
-    console.log(findBy, song)
+
     try {
         const result = await Song.findOneAndUpdate( findBy, { $set: cleanSong }, { new: true, runValidators: true } );
-        if(!result) throw new Error()
+        if(!result) throw RequestError(404)
         return result;
     } catch (error) {
         return { song, error }
