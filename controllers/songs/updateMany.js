@@ -18,9 +18,9 @@ const resultsPromises =  songs.map(async song => {
     delete cleanSong[key];
 
     try {
-        const result = await Song.findOneAndUpdate( findBy, { $set: cleanSong }, { new: true, runValidators: true } );
-        if(!result) throw RequestError(404)
-        return result;
+        const updatedSong = await Song.findOneAndUpdate( findBy, { $set: cleanSong }, { new: true, runValidators: true } );
+        if(!updatedSong) throw RequestError(404);
+        return updatedSong;
     } catch (error) {
         return { song, error }
     }
