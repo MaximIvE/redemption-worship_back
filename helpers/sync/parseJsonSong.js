@@ -8,7 +8,8 @@ const parseSong = (song) => {
         });
         return res;
     }, "");
-    return result.replaceAll(/\n+/g, '\n');
+    
+    return result.split('\n').map(line => line.trim());
 
 };
 
