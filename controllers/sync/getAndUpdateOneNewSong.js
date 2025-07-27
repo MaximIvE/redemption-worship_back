@@ -34,10 +34,8 @@ const getAllSongsIdWithMongo = async () => {
 };
 
 const updateOneSongByMongo = async(song_id, song) => {
-    console.log(song)
     const data = await Song.findOne({song_id});
     
-    console.log(data)
 const updatedSong = await Song.findOneAndUpdate(
     { song_id },
     song,
@@ -53,7 +51,6 @@ const syncOneSong = async(song_id) => {
     // Оновлюємо пісню
     const  updatedData = await updateOneSongByMongo(song_id, song);
     // Якщо її немає, то записуємо нову
-    console.log({updatedData})
     if(updatedData === null) {
         const language = getLanguage(song.lyrics?.[0].text || song.title);
         const createdSong =  await Song.create({song_id, language, ...song});
