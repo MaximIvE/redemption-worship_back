@@ -142,9 +142,9 @@ const updateSongSchema = Joi.object({
   }),
   lyrics: Joi.array().items(
     Joi.object({
-      title: Joi.string().allow(''),
-      text: Joi.string().allow(''),
-      chords: Joi.array().items(Joi.string().allow(''))
+      title: Joi.string(),
+      text: Joi.string(),
+      chords: Joi.array().items(Joi.string())
     })
   ),
   media: Joi.object().pattern(
