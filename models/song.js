@@ -7,8 +7,12 @@ const timeSigRegExp = /^\d{1,2}\/\d{1,2}$/;
 
 const lyricsSchema = new Schema({
   title: { type: String},
-  text: { type: String },
-  chords: { type: [String], default: [""]}
+  lines: { 
+    type: [{
+          text: {type: String, default: ""},
+          chords: {type: String, default: ""}
+        }]
+  }
 }, { _id: false });
 
 const metaSchema = new Schema({
@@ -117,8 +121,12 @@ const createSongSchema = Joi.object({
   lyrics: Joi.array().items(
     Joi.object({
       title: Joi.string().allow(''),
-      text: Joi.string().allow(''),
-      chords: Joi.array().items(Joi.string().allow(''))
+      lines: Joi.array().items(
+        Joi.object({
+          text: Joi.string().allow(''),
+          chords: Joi.string().allow('')
+        })
+      )
     })
   )
 });
@@ -143,8 +151,12 @@ const updateSongSchema = Joi.object({
   lyrics: Joi.array().items(
     Joi.object({
       title: Joi.string(),
-      text: Joi.string(),
-      chords: Joi.array().items(Joi.string())
+      lines: Joi.array().items(
+        Joi.object({
+          text: Joi.string(),
+          chords: Joi.string()
+        })
+      )
     })
   ),
   media: Joi.object().pattern(
