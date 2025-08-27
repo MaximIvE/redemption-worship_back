@@ -46,8 +46,9 @@ const getContent = lyrics => {
     })
 
     if (title) setContent();
-
-    return content;
+    const contentFormat = content.map(item => {return {title: item.title, lines: item.text.split("\n").map(t => {return {chords: "", text: t}})}})
+    // console.log(contentFormat)
+    return contentFormat;
 };
 
 const separateSong = (lines) => {
