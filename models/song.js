@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { handleSaveErrors } = require('../helpers');
+const { handleSaveErrors, hasChords } = require('../helpers');
 const Joi = require("joi");
 
 const bpmRegExp = /^\d{1,3},\d{2}$/;
@@ -71,6 +71,9 @@ const songSchema = new Schema({
   banner: {type: bannerSchema}
 }, { versionKey: false, timestamps: true});
 
+//Додаткове обчислювальне поле, щ опоказує наявніст ьхоч одного рядка з акордами
+songSchema.virtual('hasChords').get(hasChords);
+songSchema.set('toJSON', { virtuals: true });
 
 songSchema.post('save', handleSaveErrors);
 songSchema.post('insertMany', handleSaveErrors);
