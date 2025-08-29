@@ -15,6 +15,8 @@ if(search) {
         {
             $match:{
                 $or:[
+                    {title: {$regex: search, $options: "i"}},
+                    {title_en: {$regex: search, $options: "i"}},
                     {artist: {$regex: search, $options: "i"}},
                     {"lyrics.lines.text": {$regex: search, $options: "i"}}
                 ]
@@ -31,6 +33,8 @@ if(search) {
                     $first: {
                         $switch:{
                             branches: [
+                                {case: {$regexMatch: {input: "$title", regex: search, options: "i"}}, then: ""},
+                                {case: {$regexMatch: {input: "$title_en", regex: search, options: "i"}}, then: ""},
                                 {case: {$regexMatch: {input: "$lyrics.lines.text", regex: search, options: "i"}}, then: "$lyrics.lines.text"},
                                 {case: {$regexMatch: {input: "$artist", regex: search, options: "i"}}, then: "$artist"}
                             ]
