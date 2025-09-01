@@ -4,7 +4,8 @@ const { Song } = require("../../models/song");
 
 //Валідація тіла запиту при додаванні / зміні
 const addOne = async(req, res) => {
-    const result = await Song.create(req.body);
+    const song_id = req.params.id;
+    const result = await Song.create({song_id, ...req.body});
 
     if(!result) throw RequestError(500);
 

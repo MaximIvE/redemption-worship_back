@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { handleSaveErrors } = require('../helpers');
+const { handleSaveErrors, hasChords } = require('../helpers');
 const Joi = require("joi");
 
 const bpmRegExp = /^\d{1,3},\d{2}$/;
@@ -7,8 +7,12 @@ const timeSigRegExp = /^\d{1,2}\/\d{1,2}$/;
 
 const lyricsSchema = new Schema({
   title: { type: String},
-  text: { type: String },
-  chords: { type: String }
+  lines: { 
+    type: [{
+          text: {type: String, default: ""},
+          chords: {type: String, default: ""}
+        }]
+  }
 }, { _id: false });
 
 const metaSchema = new Schema({
@@ -51,8 +55,8 @@ const bannerSchema = new Schema({
 
 
 const songSchema = new Schema({
-  song_id: { type: String, unique: true },
-  title: { type: String, unique: true },
+  song_id: { type: String, unique: true, required: true },
+  title: { type: String, unique: true, required: true },
   title_en: { type: String, default: ""},
   language: { type: String, enum: ['ukr', 'rus'] },
   artist: { type: String, default: "" },
@@ -67,6 +71,9 @@ const songSchema = new Schema({
   banner: {type: bannerSchema}
 }, { versionKey: false, timestamps: true});
 
+//Додаткове обчислювальне поле, щ опоказує наявніст ьхоч одного рядка з акордами
+songSchema.virtual('hasChords').get(hasChords);
+songSchema.set('toJSON', { virtuals: true });
 
 songSchema.post('save', handleSaveErrors);
 songSchema.post('insertMany', handleSaveErrors);
@@ -101,16 +108,7 @@ const Song = model('song', songSchema);
   
 
 const createSongSchema = Joi.object({
-  song_id: Joi.string().required(),
   title: Joi.string().required().messages({"string.base": 'title should be a type of String', "any.required": "'title' is a required field"}),
-  title_en: Joi.string(),
-  language: Joi.string().required().valid('ukr', 'rus')
-});
-
-const createManySongsSchema = Joi.array().items(createSongSchema);
-
-const updateSongSchema = Joi.object({
-  title: Joi.string(),
   title_en: Joi.string(),
   language: Joi.string().valid('ukr', 'rus'),
   artist: Joi.string(),
@@ -126,8 +124,42 @@ const updateSongSchema = Joi.object({
   lyrics: Joi.array().items(
     Joi.object({
       title: Joi.string().allow(''),
-      text: Joi.string().allow(''),
-      chords: Joi.string().allow('')
+      lines: Joi.array().items(
+        Joi.object({
+          text: Joi.string().allow(''),
+          chords: Joi.string().allow('')
+        })
+      )
+    })
+  )
+});
+
+const createManySongsSchema = Joi.array().items(createSongSchema);
+
+const updateSongSchema = Joi.object({
+  song_id: Joi.string(),
+  title: Joi.string(),
+  title_en: Joi.string(),
+  language: Joi.string().valid('ukr', 'rus'),
+  artist: Joi.string(),
+  meta: Joi.object({
+    key: Joi.string(),
+    firstChord: Joi.string().allow(''),
+    bpm: Joi.string().pattern(bpmRegExp)
+      .messages({ "string.pattern.base": "bpm must be in format '137,00' or '68,50'" }),
+    timeSig: Joi.string().pattern(timeSigRegExp)
+      .messages({ "string.pattern.base": "timeSig must be in format '4/4'" }),
+    songMap: Joi.array().default([])
+  }),
+  lyrics: Joi.array().items(
+    Joi.object({
+      title: Joi.string(),
+      lines: Joi.array().items(
+        Joi.object({
+          text: Joi.string().allow(''),
+          chords: Joi.string().allow('')
+        })
+      )
     })
   ),
   media: Joi.object().pattern(
@@ -141,12 +173,15 @@ const updateSongSchema = Joi.object({
   })
 });
 
+const updateManySongsSchema = Joi.array().items(updateSongSchema);
+
 
 const JoiSongs = {
   createSongSchema,
   createManySongsSchema,
   
-  updateSongSchema
+  updateSongSchema,
+  updateManySongsSchema
 }
 
 module.exports = Song;
