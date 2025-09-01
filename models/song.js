@@ -69,7 +69,7 @@ const songSchema = new Schema({
   
   info: { type: String, default: "" },
   banner: {type: bannerSchema}
-}, { versionKey: false, timestamps: true});
+}, { versionKey: false, timestamps: true, id: false});
 
 //Додаткове обчислювальне поле, щ опоказує наявніст ьхоч одного рядка з акордами
 songSchema.virtual('hasChords').get(hasChords);
