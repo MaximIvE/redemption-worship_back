@@ -3,7 +3,7 @@ const {Song} = require("../../models/song");
 
 
 const getAll = async (req, res) => {
-const {search} = req.query; // Пошуковий запит (фільтр) по текстам, виконавцям
+const search = req.query.search?.trim(); // Пошуковий запит (фільтр) по текстам, виконавцям
 let data = [];
 // Якщо є пошуковий запит, то використовуємо агрегацію. якщо ні - то звичайний пошук. 
 // При агрегації додається нове поле 'search'
