@@ -62,7 +62,8 @@ if(search) {
 if(!data.length) throw RequestError(404);
 const sortData = sortByTitle(data);
 
-res.json(sortData)
+
+res.json(data)
 }
 
 module.exports = getAll;
