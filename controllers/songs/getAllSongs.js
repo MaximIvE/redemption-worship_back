@@ -29,6 +29,7 @@ if(search) {
                 title: {$first: "$title"},
                 title_en: {$first: "$title_en"},
                 language: {$first: "$language"},
+                createdAt: {$first: "$createdAt"},
                 search: {
                     $first: {
                         $switch:{
@@ -40,7 +41,17 @@ if(search) {
                             ]
                         }
                 }
-            }}
+                },
+                hasChords: {
+                    $first: {
+                            $cond: [
+                            { $regexMatch: { input: "$lyrics.lines.chords", regex: /\S/ } }, // рядок містить хоча б один непробільний символ
+                            true,   // якщо рядок містить акорд
+                            false   // якщо рядок порожній або тільки пробіли
+                            ]
+                        }
+                    },
+            }
         },
 
         {
@@ -50,12 +61,14 @@ if(search) {
                 title: 1,
                 title_en: 1, 
                 language: 1,
-                search: 1
+                createdAt: 1,
+                search: 1,
+                hasChords: 1
             }
         }
     ]);
 }else{
-    data = await Song.find().select("song_id title title_en language -_id");
+    data = await Song.find().select("song_id title title_en createdAt language -_id");
 }
 
 
@@ -63,7 +76,7 @@ if(!data.length) throw RequestError(404);
 const sortData = sortByTitle(data);
 
 
-res.json(data)
+res.json(sortData)
 }
 
 module.exports = getAll;

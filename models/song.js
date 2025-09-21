@@ -15,6 +15,10 @@ const lyricsSchema = new Schema({
   }
 }, { _id: false });
 
+const serviceSchema = new Schema({
+  hasChords: {type: Boolean}
+},{ _id: false })
+
 const metaSchema = new Schema({
   key: { type: String, default: "" },
   firstChord: { type: String, default: "" },
@@ -68,12 +72,14 @@ const songSchema = new Schema({
   media: {type: Map, of: mediaKeySchema },
   
   info: { type: String, default: "" },
-  banner: {type: bannerSchema}
+  banner: {type: bannerSchema},
+  service: {type: serviceSchema}
 }, { versionKey: false, timestamps: true, id: false});
 
 //Додаткове обчислювальне поле, щ опоказує наявніст ьхоч одного рядка з акордами
 songSchema.virtual('hasChords').get(hasChords);
 songSchema.set('toJSON', { virtuals: true });
+songSchema.set('toObject', { virtuals: true });
 
 songSchema.post('save', handleSaveErrors);
 songSchema.post('insertMany', handleSaveErrors);
