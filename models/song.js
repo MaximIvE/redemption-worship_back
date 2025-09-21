@@ -112,6 +112,9 @@ const Song = model('song', songSchema);
       tutorials: Joi.array().items(mediaTutorialSchemaJoi)
     });
   
+    const serviceJoiSchema = Joi.object({
+      hasChords: Joi.boolean()
+    })
 
 const createSongSchema = Joi.object({
   title: Joi.string().required().messages({"string.base": 'title should be a type of String', "any.required": "'title' is a required field"}),
@@ -137,7 +140,8 @@ const createSongSchema = Joi.object({
         })
       )
     })
-  )
+  ),
+  service: serviceJoiSchema
 });
 
 const createManySongsSchema = Joi.array().items(createSongSchema);
@@ -176,7 +180,8 @@ const updateSongSchema = Joi.object({
   banner: Joi.object({
     _1x: Joi.string(),
     _2x: Joi.string()
-  })
+  }),
+  service: serviceJoiSchema
 });
 
 const updateManySongsSchema = Joi.array().items(updateSongSchema);
