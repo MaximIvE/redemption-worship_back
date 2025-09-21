@@ -4,7 +4,8 @@ const Joi = require("joi");
 
 const bpmRegExp = /^\d{1,3},\d{2}$/;
 const timeSigRegExp = /^\d{1,2}\/\d{1,2}$/;
-const mediaPlatforms = ["youtube"]
+const mediaPlatforms = ["youtube"];
+const keys = [1,2,3,4,5,6,7,8,9,10,11,12];
 const songMapVariables = ["V", "C", "B"]; //можуть містити число після себе
 const songMapSingleVariables = ["I", "Vp", "Tg", "Rf",  "Pc",  "It", "Is",  "O", "E", "Bd", "Ta"];
 
@@ -36,7 +37,7 @@ const bannerSchema = new Schema({
 
 
     const mediaItemSchema = new Schema({
-      key: {type: Number, enum: [1,2,3,4,5,6,7,8,9,10,11,12], required: true}, //Позначаємо числом ступінь, де A = 1, A# = 2, Ab = 12
+      key: {type: Number, enum: keys, required: true}, //Позначаємо числом ступінь, де A = 1, A# = 2, Ab = 12
       source: {type: String, required: true},
       platform: {type: String, enum: mediaPlatforms, required: true}, //тут платформа звідки взято, як от youtube
       artist: {type: String, required: true}
@@ -85,7 +86,7 @@ songSchema.post('insertMany', handleSaveErrors);
 const Song = model('song', songSchema);
 
   const mediaItemSchemaJoi = Joi.object({
-      key: Joi.number().valid(1,2,3,4,5,6,7,8,9,10,11,12).required(),
+      key: Joi.number().valid(...keys).required(),
       source: Joi.string().required(),
       platform: Joi.string().valid(...mediaPlatforms).required(),
       artist: Joi.string().required()
