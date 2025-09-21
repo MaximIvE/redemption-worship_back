@@ -4,8 +4,10 @@ const Joi = require("joi");
 
 const bpmRegExp = /^\d{1,3},\d{2}$/;
 const timeSigRegExp = /^\d{1,2}\/\d{1,2}$/;
-const songMapVariables = ["V", "C","B"]; //можуть містити число після себе
+const mediaPlatforms = ["youtube"]
+const songMapVariables = ["V", "C", "B"]; //можуть містити число після себе
 const songMapSingleVariables = ["I", "Vp", "Tg", "Rf",  "Pc",  "It", "Is",  "O", "E", "Bd", "Ta"];
+
 
 const songMapRegExp = new RegExp(`^((${songMapVariables.join("|")})(\\d+)?)|(${songMapSingleVariables.join("|")})$`);
 
@@ -34,9 +36,9 @@ const bannerSchema = new Schema({
 
 
     const mediaItemSchema = new Schema({
-      rating: {type: Number, required: true},
+      key: {type: Number, enum: [1,2,3,4,5,6,7,8,9,10,11,12], required: true}, //Позначаємо числом ступінь, де A = 1, A# = 2, Ab = 12
       source: {type: String, required: true},
-      tag: {type: String, required: true},
+      platform: {type: String, enum: mediaPlatforms, required: true}, //тут платформа звідки взято, як от youtube
       artist: {type: String, required: true}
     }, { _id: false });
 
@@ -69,7 +71,7 @@ const songSchema = new Schema({
 
   lyrics: {type: [lyricsSchema]},
 
-  media: {type: Map, of: mediaKeySchema },
+  media: {type: mediaKeySchema},
   
   info: { type: String, default: "" },
   banner: {type: bannerSchema},
@@ -83,9 +85,9 @@ songSchema.post('insertMany', handleSaveErrors);
 const Song = model('song', songSchema);
 
   const mediaItemSchemaJoi = Joi.object({
-      rating: Joi.number().required(),
-      source: Joi.string().uri().required(), // перевірка на валідний URL
-      tag: Joi.string().required(),
+      key: Joi.number().valid(1,2,3,4,5,6,7,8,9,10,11,12).required(),
+      source: Joi.string().required(),
+      platform: Joi.string().valid(...mediaPlatforms).required(),
       artist: Joi.string().required()
     });
   
@@ -164,10 +166,7 @@ const updateSongSchema = Joi.object({
       )
     })
   ),
-  media: Joi.object().pattern(
-    Joi.string(),
-    mediaKeySchemaJoi
-    ),
+  media: mediaKeySchemaJoi,
   info: Joi.string(),
   banner: Joi.object({
     _1x: Joi.string(),
