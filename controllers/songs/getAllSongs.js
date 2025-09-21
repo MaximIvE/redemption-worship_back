@@ -30,6 +30,7 @@ if(search) {
                 title_en: {$first: "$title_en"},
                 language: {$first: "$language"},
                 createdAt: {$first: "$createdAt"},
+                hasChords: {$first: "$hasChords"},
                 search: {
                     $first: {
                         $switch:{
@@ -41,16 +42,7 @@ if(search) {
                             ]
                         }
                 }
-                },
-                hasChords: {
-                    $first: {
-                            $cond: [
-                            { $regexMatch: { input: "$lyrics.lines.chords", regex: /\S/ } }, // рядок містить хоча б один непробільний символ
-                            true,   // якщо рядок містить акорд
-                            false   // якщо рядок порожній або тільки пробіли
-                            ]
-                        }
-                    },
+                }
             }
         },
 
@@ -63,12 +55,12 @@ if(search) {
                 language: 1,
                 createdAt: 1,
                 search: 1,
-                hasChords: 1
+                hasChords: {$ifNull: ["$hasChords", false]}
             }
         }
     ]);
 }else{
-    data = await Song.find().select("song_id title title_en createdAt language -_id");
+    data = await Song.find().select("song_id title title_en createdAt language hasChords -_id");
 }
 
 

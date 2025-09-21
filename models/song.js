@@ -15,10 +15,6 @@ const lyricsSchema = new Schema({
   }
 }, { _id: false });
 
-const serviceSchema = new Schema({
-  hasChords: {type: Boolean}
-},{ _id: false })
-
 const metaSchema = new Schema({
   key: { type: String, default: "" },
   firstChord: { type: String, default: "" },
@@ -73,13 +69,9 @@ const songSchema = new Schema({
   
   info: { type: String, default: "" },
   banner: {type: bannerSchema},
-  service: {type: serviceSchema}
+  hasChords: {type: Boolean, default: false}
 }, { versionKey: false, timestamps: true, id: false});
 
-//Додаткове обчислювальне поле, щ опоказує наявніст ьхоч одного рядка з акордами
-songSchema.virtual('hasChords').get(hasChords);
-songSchema.set('toJSON', { virtuals: true });
-songSchema.set('toObject', { virtuals: true });
 
 songSchema.post('save', handleSaveErrors);
 songSchema.post('insertMany', handleSaveErrors);
@@ -111,10 +103,6 @@ const Song = model('song', songSchema);
       video: Joi.array().items(mediaItemSchemaJoi).default([]),
       tutorials: Joi.array().items(mediaTutorialSchemaJoi)
     });
-  
-    const serviceJoiSchema = Joi.object({
-      hasChords: Joi.boolean()
-    })
 
 const createSongSchema = Joi.object({
   title: Joi.string().required().messages({"string.base": 'title should be a type of String', "any.required": "'title' is a required field"}),
@@ -141,7 +129,7 @@ const createSongSchema = Joi.object({
       )
     })
   ),
-  service: serviceJoiSchema
+  hasChords: Joi.boolean().default(false)
 });
 
 const createManySongsSchema = Joi.array().items(createSongSchema);
@@ -181,7 +169,7 @@ const updateSongSchema = Joi.object({
     _1x: Joi.string(),
     _2x: Joi.string()
   }),
-  service: serviceJoiSchema
+  hasChords: Joi.boolean()
 });
 
 const updateManySongsSchema = Joi.array().items(updateSongSchema);
