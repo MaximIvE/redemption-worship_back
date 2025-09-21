@@ -1,13 +1,17 @@
 const { Schema, model } = require('mongoose');
-const { handleSaveErrors, hasChords } = require('../helpers');
+const { handleSaveErrors } = require('../helpers');
 const Joi = require("joi");
 
 const bpmRegExp = /^\d{1,3},\d{2}$/;
 const timeSigRegExp = /^\d{1,2}\/\d{1,2}$/;
+const songMapVariables = ["V", "C","B"]; //можуть містити число після себе
+const songMapSingleVariables = ["I", "Vp", "Tg", "Rf",  "Pc",  "It", "Is",  "O", "E", "Bd", "Ta"];
+
+const songMapRegExp = new RegExp(`^((${songMapVariables.join("|")})(\\d+)?)|(${songMapSingleVariables.join("|")})$`);
 
 const lyricsSchema = new Schema({
   title: { type: String},
-  lines: { 
+  lines: {
     type: [{
           text: {type: String, default: ""},
           chords: {type: String, default: ""}
@@ -20,7 +24,7 @@ const metaSchema = new Schema({
   firstChord: { type: String, default: "" },
   bpm: { type: String, match: bpmRegExp, default: "" },
   timeSig: { type: String, match: timeSigRegExp, default: "" },
-  songMap: {type: [String], enum: ['intro', 'verse', 'chorus', 'bridge', 'outro'], default: [] }
+  songMap: {type: [String], match: songMapRegExp, default: [] }
 }, { _id: false });
 
 const bannerSchema = new Schema({
@@ -147,7 +151,7 @@ const updateSongSchema = Joi.object({
       .messages({ "string.pattern.base": "bpm must be in format '137,00' or '68,50'" }),
     timeSig: Joi.string().pattern(timeSigRegExp)
       .messages({ "string.pattern.base": "timeSig must be in format '4/4'" }),
-    songMap: Joi.array().default([])
+    songMap: Joi.array().items(Joi.string().pattern(songMapRegExp))
   }),
   lyrics: Joi.array().items(
     Joi.object({
