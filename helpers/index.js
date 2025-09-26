@@ -5,7 +5,6 @@ const RequestError = require("./requestError");
 const separateOfNames = require("./sync/separateOfNames");
 const sortByTitle = require("./utils/sortByTitle");
 const parseSong = require("./sync/parseJsonSong");
-const hasChords  = require("./utils/virtualsFields");
 
 
 module.exports = {
@@ -17,7 +16,5 @@ module.exports = {
     parseSong,
     handleSaveErrors,
 
-    sortByTitle,
-
-    hasChords
+    sortByTitle
 }

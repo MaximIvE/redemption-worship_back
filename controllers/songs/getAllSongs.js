@@ -29,6 +29,8 @@ if(search) {
                 title: {$first: "$title"},
                 title_en: {$first: "$title_en"},
                 language: {$first: "$language"},
+                createdAt: {$first: "$createdAt"},
+                hasChords: {$first: "$hasChords"},
                 search: {
                     $first: {
                         $switch:{
@@ -40,7 +42,8 @@ if(search) {
                             ]
                         }
                 }
-            }}
+                }
+            }
         },
 
         {
@@ -50,12 +53,14 @@ if(search) {
                 title: 1,
                 title_en: 1, 
                 language: 1,
-                search: 1
+                createdAt: 1,
+                search: 1,
+                hasChords: {$ifNull: ["$hasChords", false]}
             }
         }
     ]);
 }else{
-    data = await Song.find().select("song_id title title_en language -_id");
+    data = await Song.find().select("song_id title title_en createdAt language hasChords -_id");
 }
 
 
@@ -63,7 +68,7 @@ if(!data.length) throw RequestError(404);
 const sortData = sortByTitle(data);
 
 
-res.json(data)
+res.json(sortData)
 }
 
 module.exports = getAll;

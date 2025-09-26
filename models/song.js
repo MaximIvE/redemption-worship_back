@@ -1,13 +1,20 @@
 const { Schema, model } = require('mongoose');
-const { handleSaveErrors, hasChords } = require('../helpers');
+const { handleSaveErrors } = require('../helpers');
 const Joi = require("joi");
 
 const bpmRegExp = /^\d{1,3},\d{2}$/;
 const timeSigRegExp = /^\d{1,2}\/\d{1,2}$/;
+const mediaPlatforms = ["youtube"];
+const keys = [1,2,3,4,5,6,7,8,9,10,11,12];
+const songMapVariables = ["V", "C", "B"]; //можуть містити число після себе
+const songMapSingleVariables = ["I", "Vp", "Tg", "Rf",  "Pc",  "It", "Is",  "O", "E", "Bd", "Ta"];
+
+
+const songMapRegExp = new RegExp(`^((${songMapVariables.join("|")})(\\d+)?)|(${songMapSingleVariables.join("|")})$`);
 
 const lyricsSchema = new Schema({
   title: { type: String},
-  lines: { 
+  lines: {
     type: [{
           text: {type: String, default: ""},
           chords: {type: String, default: ""}
@@ -20,7 +27,7 @@ const metaSchema = new Schema({
   firstChord: { type: String, default: "" },
   bpm: { type: String, match: bpmRegExp, default: "" },
   timeSig: { type: String, match: timeSigRegExp, default: "" },
-  songMap: {type: [String], enum: ['intro', 'verse', 'chorus', 'bridge', 'outro'], default: [] }
+  songMap: {type: [String], match: songMapRegExp, default: [] }
 }, { _id: false });
 
 const bannerSchema = new Schema({
@@ -30,9 +37,9 @@ const bannerSchema = new Schema({
 
 
     const mediaItemSchema = new Schema({
-      rating: {type: Number, required: true},
+      key: {type: Number, enum: keys, required: true}, //Позначаємо числом ступінь, де A = 1, A# = 2, Ab = 12
       source: {type: String, required: true},
-      tag: {type: String, required: true},
+      platform: {type: String, enum: mediaPlatforms, required: true}, //тут платформа звідки взято, як от youtube
       artist: {type: String, required: true}
     }, { _id: false });
 
@@ -65,15 +72,13 @@ const songSchema = new Schema({
 
   lyrics: {type: [lyricsSchema]},
 
-  media: {type: Map, of: mediaKeySchema },
+  media: {type: mediaKeySchema},
   
   info: { type: String, default: "" },
-  banner: {type: bannerSchema}
+  banner: {type: bannerSchema},
+  hasChords: {type: Boolean, default: false}
 }, { versionKey: false, timestamps: true, id: false});
 
-//Додаткове обчислювальне поле, щ опоказує наявніст ьхоч одного рядка з акордами
-songSchema.virtual('hasChords').get(hasChords);
-songSchema.set('toJSON', { virtuals: true });
 
 songSchema.post('save', handleSaveErrors);
 songSchema.post('insertMany', handleSaveErrors);
@@ -81,9 +86,9 @@ songSchema.post('insertMany', handleSaveErrors);
 const Song = model('song', songSchema);
 
   const mediaItemSchemaJoi = Joi.object({
-      rating: Joi.number().required(),
-      source: Joi.string().uri().required(), // перевірка на валідний URL
-      tag: Joi.string().required(),
+      key: Joi.number().valid(...keys).required(),
+      source: Joi.string().required(),
+      platform: Joi.string().valid(...mediaPlatforms).required(),
       artist: Joi.string().required()
     });
   
@@ -105,7 +110,6 @@ const Song = model('song', songSchema);
       video: Joi.array().items(mediaItemSchemaJoi).default([]),
       tutorials: Joi.array().items(mediaTutorialSchemaJoi)
     });
-  
 
 const createSongSchema = Joi.object({
   title: Joi.string().required().messages({"string.base": 'title should be a type of String', "any.required": "'title' is a required field"}),
@@ -131,7 +135,8 @@ const createSongSchema = Joi.object({
         })
       )
     })
-  )
+  ),
+  hasChords: Joi.boolean().default(false)
 });
 
 const createManySongsSchema = Joi.array().items(createSongSchema);
@@ -149,7 +154,7 @@ const updateSongSchema = Joi.object({
       .messages({ "string.pattern.base": "bpm must be in format '137,00' or '68,50'" }),
     timeSig: Joi.string().pattern(timeSigRegExp)
       .messages({ "string.pattern.base": "timeSig must be in format '4/4'" }),
-    songMap: Joi.array().default([])
+    songMap: Joi.array().items(Joi.string().pattern(songMapRegExp))
   }),
   lyrics: Joi.array().items(
     Joi.object({
@@ -162,15 +167,13 @@ const updateSongSchema = Joi.object({
       )
     })
   ),
-  media: Joi.object().pattern(
-    Joi.string(),
-    mediaKeySchemaJoi
-    ),
+  media: mediaKeySchemaJoi,
   info: Joi.string(),
   banner: Joi.object({
     _1x: Joi.string(),
     _2x: Joi.string()
-  })
+  }),
+  hasChords: Joi.boolean()
 });
 
 const updateManySongsSchema = Joi.array().items(updateSongSchema);
