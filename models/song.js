@@ -14,6 +14,18 @@ const songMapRegExp = new RegExp(`^((${songMapVariables.join("|")})(\\d+)?)|(${s
 
 const lyricsSchema = new Schema({
   title: { type: String},
+  repeat: {
+    type: {
+          text: {type: Number,
+            min: 0,
+            validate: Number.isInteger
+          },
+          chords: {type: Number,
+            min: 0,
+            validate: Number.isInteger
+          }
+        }
+  },
   lines: {
     type: [{
           text: {type: String, default: ""},
@@ -128,6 +140,10 @@ const createSongSchema = Joi.object({
   lyrics: Joi.array().items(
     Joi.object({
       title: Joi.string().allow(''),
+      repeat: Joi.object({
+        text: Joi.number().integer().min(0),
+        chords: Joi.number().integer().min(0)
+      }),
       lines: Joi.array().items(
         Joi.object({
           text: Joi.string().allow(''),
@@ -159,6 +175,10 @@ const updateSongSchema = Joi.object({
   lyrics: Joi.array().items(
     Joi.object({
       title: Joi.string(),
+      repeat: Joi.object({
+        text: Joi.number().integer().min(0),
+        chords: Joi.number().integer().min(0)
+      }),
       lines: Joi.array().items(
         Joi.object({
           text: Joi.string().allow(''),
