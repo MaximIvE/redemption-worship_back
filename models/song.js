@@ -12,20 +12,20 @@ const songMapSingleVariables = ["I", "Vp", "Tg", "Rf",  "Pc",  "It", "Is",  "O",
 
 const songMapRegExp = new RegExp(`^((${songMapVariables.join("|")})(\\d+)?)|(${songMapSingleVariables.join("|")})$`);
 
+const repeatSchema = new Schema({
+  text: {type: Number,
+    min: 0,
+    validate: Number.isInteger
+  },
+  chords: {type: Number,
+    min: 0,
+    validate: Number.isInteger
+  }
+}, {_id: false});
+
 const lyricsSchema = new Schema({
   title: { type: String},
-  repeat: {
-    type: {
-          text: {type: Number,
-            min: 0,
-            validate: Number.isInteger
-          },
-          chords: {type: Number,
-            min: 0,
-            validate: Number.isInteger
-          }
-        }
-  },
+  repeat: {type: repeatSchema},
   lines: {
     type: [{
           text: {type: String, default: ""},
