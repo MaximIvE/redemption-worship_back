@@ -2,7 +2,6 @@ const { Schema, model } = require('mongoose');
 const { handleSaveErrors } = require('../helpers');
 const Joi = require("joi");
 
-const bpmRegExp = /^\d{1,3},\d{2}$/;
 const timeSigRegExp = /^\d{1,2}\/\d{1,2}$/;
 const mediaPlatforms = ["youtube"];
 const keys = [1,2,3,4,5,6,7,8,9,10,11,12];
@@ -26,6 +25,7 @@ const repeatSchema = new Schema({
 const lyricsSchema = new Schema({
   title: { type: String},
   repeat: {type: repeatSchema},
+  firstBeat: {type: Number, min: 1, validate: Number.isInteger},
   lines: {
     type: [{
           text: {type: String, default: ""},
@@ -37,9 +37,10 @@ const lyricsSchema = new Schema({
 const metaSchema = new Schema({
   key: { type: String, default: "" },
   firstChord: { type: String, default: "" },
-  bpm: { type: String, match: bpmRegExp, default: "" },
+  bpm: { type: Number, min: 1, default: null },
   timeSig: { type: String, match: timeSigRegExp, default: "" },
-  songMap: {type: [String], match: songMapRegExp, default: [] }
+  songMap: {type: [String], match: songMapRegExp, default: [] },
+  lastBeat: {type: Number, min:1, default: null}
 }, { _id: false });
 
 const bannerSchema = new Schema({
@@ -49,9 +50,9 @@ const bannerSchema = new Schema({
 
 
     const mediaItemSchema = new Schema({
-      key: {type: Number, enum: keys, required: true}, //Позначаємо числом ступінь, де A = 1, A# = 2, Ab = 12
+      key: {type: Number, enum: keys, required: true}, /*Позначаємо числом ступінь, де A = 1, A# = 2, Ab = 12 */
       source: {type: String, required: true},
-      platform: {type: String, enum: mediaPlatforms, required: true}, //тут платформа звідки взято, як от youtube
+      platform: {type: String, enum: mediaPlatforms, required: true}, /*тут платформа звідки взято, як от youtube */
       artist: {type: String, required: true}
     }, { _id: false });
 
@@ -131,11 +132,11 @@ const createSongSchema = Joi.object({
   meta: Joi.object({
     key: Joi.string(),
     firstChord: Joi.string().allow(''),
-    bpm: Joi.string().pattern(bpmRegExp)
-      .messages({ "string.pattern.base": "bpm must be in format '137,00' or '68,50'" }),
+    bpm: Joi.number().min(1),
     timeSig: Joi.string().pattern(timeSigRegExp)
       .messages({ "string.pattern.base": "timeSig must be in format '4/4'" }),
-    songMap: Joi.array().default([])
+    songMap: Joi.array().default([]),
+    lastBeat: Joi.number().integer().min(1)
   }),
   lyrics: Joi.array().items(
     Joi.object({
@@ -144,6 +145,7 @@ const createSongSchema = Joi.object({
         text: Joi.number().integer().min(0),
         chords: Joi.number().integer().min(0)
       }),
+      firstBeat: Joi.number().integer().min(1),
       lines: Joi.array().items(
         Joi.object({
           text: Joi.string().allow(''),
@@ -166,11 +168,11 @@ const updateSongSchema = Joi.object({
   meta: Joi.object({
     key: Joi.string(),
     firstChord: Joi.string().allow(''),
-    bpm: Joi.string().pattern(bpmRegExp)
-      .messages({ "string.pattern.base": "bpm must be in format '137,00' or '68,50'" }),
+    bpm: Joi.number().min(1),
     timeSig: Joi.string().pattern(timeSigRegExp)
       .messages({ "string.pattern.base": "timeSig must be in format '4/4'" }),
-    songMap: Joi.array().items(Joi.string().pattern(songMapRegExp))
+    songMap: Joi.array().items(Joi.string().pattern(songMapRegExp)),
+    lastBeat: Joi.number().integer().min(1)
   }),
   lyrics: Joi.array().items(
     Joi.object({
@@ -179,6 +181,7 @@ const updateSongSchema = Joi.object({
         text: Joi.number().integer().min(0),
         chords: Joi.number().integer().min(0)
       }),
+      firstBeat: Joi.number().integer().min(1),
       lines: Joi.array().items(
         Joi.object({
           text: Joi.string().allow(''),
