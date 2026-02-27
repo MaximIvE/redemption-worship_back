@@ -25,7 +25,7 @@ const repeatSchema = new Schema({
 const lyricsSchema = new Schema({
   title: { type: String},
   repeat: {type: repeatSchema},
-  firstBeat: {type: Number, min: 1, validate: Number.isInteger},
+  start: {type: Number, min: 1, validate: Number.isInteger},
   lines: {
     type: [{
           text: {type: String, default: ""},
@@ -40,7 +40,7 @@ const metaSchema = new Schema({
   bpm: { type: Number, min: 1, default: null },
   timeSig: { type: String, match: timeSigRegExp, default: "" },
   songMap: {type: [String], match: songMapRegExp, default: [] },
-  lastBeat: {type: Number, min:1, default: null}
+  total: {type: Number, min:1, default: null}
 }, { _id: false });
 
 const bannerSchema = new Schema({
@@ -136,7 +136,7 @@ const createSongSchema = Joi.object({
     timeSig: Joi.string().pattern(timeSigRegExp)
       .messages({ "string.pattern.base": "timeSig must be in format '4/4'" }),
     songMap: Joi.array().default([]),
-    lastBeat: Joi.number().integer().min(1)
+    total: Joi.number().integer().min(1)
   }),
   lyrics: Joi.array().items(
     Joi.object({
@@ -145,7 +145,7 @@ const createSongSchema = Joi.object({
         text: Joi.number().integer().min(0),
         chords: Joi.number().integer().min(0)
       }),
-      firstBeat: Joi.number().integer().min(1),
+      start: Joi.number().integer().min(1),
       lines: Joi.array().items(
         Joi.object({
           text: Joi.string().allow(''),
@@ -172,7 +172,7 @@ const updateSongSchema = Joi.object({
     timeSig: Joi.string().pattern(timeSigRegExp)
       .messages({ "string.pattern.base": "timeSig must be in format '4/4'" }),
     songMap: Joi.array().items(Joi.string().pattern(songMapRegExp)),
-    lastBeat: Joi.number().integer().min(1)
+    total: Joi.number().integer().min(1)
   }),
   lyrics: Joi.array().items(
     Joi.object({
@@ -181,7 +181,7 @@ const updateSongSchema = Joi.object({
         text: Joi.number().integer().min(0),
         chords: Joi.number().integer().min(0)
       }),
-      firstBeat: Joi.number().integer().min(1),
+      start: Joi.number().integer().min(1),
       lines: Joi.array().items(
         Joi.object({
           text: Joi.string().allow(''),
