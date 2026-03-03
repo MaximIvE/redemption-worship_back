@@ -40,8 +40,7 @@ const User = model("user", userSchema);
 
 const registerSchema = Joi.object({
     password: Joi.string().min(6).required(),
-    email: Joi.string().pattern(emailRegexp).required(),
-    access: Joi.string().valid("editor", "user")
+    email: Joi.string().pattern(emailRegexp).required()
 });
 
 const loginSchema = Joi.object({
