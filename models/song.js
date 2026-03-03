@@ -5,7 +5,7 @@ const Joi = require("joi");
 const timeSigRegExp = /^\d{1,2}\/\d{1,2}$/;
 const mediaPlatforms = ["youtube"];
 const keys = [1,2,3,4,5,6,7,8,9,10,11,12];
-const songMapVariables = ["V", "C", "B"]; //можуть містити число після себе
+const songMapVariables = ["V", "C", "B"]; // можуть містити число після себе
 const songMapSingleVariables = ["I", "Vp", "Tg", "Rf",  "Pc",  "It", "Is",  "O", "E", "Bd", "Ta"];
 
 
@@ -50,9 +50,9 @@ const bannerSchema = new Schema({
 
 
     const mediaItemSchema = new Schema({
-      key: {type: Number, enum: keys, required: true}, /*Позначаємо числом ступінь, де A = 1, A# = 2, Ab = 12 */
+      key: {type: Number, enum: keys, required: true}, /* Позначаємо числом ступінь, де A = 1, A# = 2, Ab = 12 */
       source: {type: String, required: true},
-      platform: {type: String, enum: mediaPlatforms, required: true}, /*тут платформа звідки взято, як от youtube */
+      platform: {type: String, enum: mediaPlatforms, required: true}, /* тут платформа звідки взято, як от youtube */
       artist: {type: String, required: true}
     }, { _id: false });
 
@@ -210,7 +210,6 @@ const JoiSongs = {
   updateManySongsSchema
 }
 
-module.exports = Song;
 module.exports = {
     Song,
     JoiSongs
