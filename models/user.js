@@ -16,10 +16,6 @@ const userSchema = new Schema({
         match: emailRegexp,
         unique: true
     },
-    token:{
-        type: String,
-        default: ""
-    },
     access:{
         type: String,
         enum: ["editor", "user"],
@@ -33,6 +29,10 @@ const userSchema = new Schema({
         enum: ["kharkiv", "svitlovodsk", "kyiv", "unkown", "other"],
         default: "unkown"
     },
+    token: {
+        type: String,
+        default: ""
+    }
 },{versionKey: false, timestamps: true});
 
 userSchema.post('save', handleSaveErrors);
@@ -40,7 +40,8 @@ const User = model("user", userSchema);
 
 const registerSchema = Joi.object({
     password: Joi.string().min(6).required(),
-    email: Joi.string().pattern(emailRegexp).required()
+    email: Joi.string().pattern(emailRegexp).required(),
+    access: Joi.string().valid("editor", "user").allow('')
 });
 
 const loginSchema = Joi.object({
@@ -50,7 +51,7 @@ const loginSchema = Joi.object({
 
 const updateInfoSchema = Joi.object({
     name: Joi.string(),
-    location: Joi.string().valid("kharkiv", "svitlovodsk", "kyiv", "unkown", "other")
+    location: Joi.string().valid("kharkiv", "svitlovodsk", "kyiv", "unkown", "other").allow('')
 })
 
 const JoiUsers = {

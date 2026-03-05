@@ -1,7 +1,13 @@
 const register = require("./register");
-const updateInfoOne = require("./updateInfoOne")
+const updateOwnInfo = require("./updateOwnInfo");
+const login = require("./login");
+const logout = require("./logout");
+const getMe = require("./getMe");
 
 module.exports = {
     register,
-    updateInfoOne
+    updateOwnInfo,
+    login,
+    logout,
+    getMe
 }
