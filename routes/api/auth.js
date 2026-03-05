@@ -14,5 +14,4 @@ router.post("/logout", authenticate, ctrlWrapper(ctrls.logout));
 router.get("/me", authenticate, ctrlWrapper(ctrls.getMe));
 router.put("/me", authenticate, validateBody(JoiUsers.updateInfoSchema ), ctrlWrapper(ctrls.updateOwnInfo));
 
-
 module.exports = router;
