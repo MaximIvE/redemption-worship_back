@@ -16,7 +16,7 @@ quoteSchema.post('save', handleSaveErrors);
 const Quote = model("quote", quoteSchema);
 
 
-//Joi Schemas
+// Joi Schemas
 const createQuoteSchema = Joi.object({
     verse: Joi.string().required(),
     place: Joi.string().required(),

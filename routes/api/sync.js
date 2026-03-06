@@ -1,16 +1,15 @@
 const express = require('express');
 const { ctrlWrapper } = require('../../helpers');
-const ctrlsSongs = require('../../controllers/sync')
+const ctrlsSongs = require('../../controllers/sync');
+const { authenticate, authorizeRole } = require('../../middlewares');
 
 
 const router = express.Router();
 
-router.get("/songs", ctrlWrapper(ctrlsSongs.getNewSongs));
-router.get("/songs/:id", ctrlWrapper(ctrlsSongs.getNewById));
+router.get("/songs", authenticate, authorizeRole("editor", "admin"), ctrlWrapper(ctrlsSongs.getNewSongs));
+router.get("/songs/:id", authenticate, authorizeRole("editor", "admin"), ctrlWrapper(ctrlsSongs.getNewById));
 
-router.put("/songs", ctrlWrapper(ctrlsSongs.syncAllDataSongs));
-router.put("/songs/:id", ctrlWrapper(ctrlsSongs.syncDataSongById));
-
-
+router.put("/songs", authenticate, authorizeRole("admin"), ctrlWrapper(ctrlsSongs.syncAllDataSongs));
+router.put("/songs/:id", authenticate, authorizeRole("admin"), ctrlWrapper(ctrlsSongs.syncDataSongById));
 
 module.exports = router;

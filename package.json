@@ -24,15 +24,20 @@
     "nodemon": "^3.1.9"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cloudinary": "^2.6.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "googleapis": "^148.0.0",
+    "gravatar": "^1.8.2",
     "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.3",
     "mammoth": "^1.9.0",
     "mongoose": "^8.14.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nodemailer": "^8.0.1",
+    "uniqid": "^5.4.0"
   }
 }

@@ -6,7 +6,8 @@ const cors = require("cors");
 const quoteRouter = require("./routes/api/quotes");
 const songsRouter = require("./routes/api/songs");
 const listsRouter = require("./routes/api/lists");
-const driveRouter = require("./routes/api/sync")
+const driveRouter = require("./routes/api/sync");
+const authRouter = require("./routes/api/auth")
 
 
 const formatsLogger = app.get('env') === "development" ? "dev" : " short";
@@ -21,10 +22,12 @@ app.use("/api/quotes", quoteRouter);
 app.use("/api/songs", songsRouter);
 // app.use("/api/drive", songsRouter);
 app.use("/api/lists", listsRouter);
+app.use("/api/lists", listsRouter);
+app.use("/api/auth", authRouter);
 
 app.use("/api/sync", driveRouter);
 
-app.use((req, res) => {
+app.use((_, res) => {
     res.status(404).json({ message: 'Not Found.' })
 });
 
