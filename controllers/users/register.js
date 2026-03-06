@@ -3,7 +3,7 @@ const uniqid = require("uniqid");
 const gravatar = require("gravatar");
 const { User } = require("../../models/user");
 const { RequestError, sendEmail } = require("../../helpers");
-const verificationLetter = require("../../templates/verificationLetter");
+const { verificationLetter } = require("../../templates");
 
 
 const register = async (req, res) => {
@@ -16,12 +16,13 @@ const register = async (req, res) => {
     const verificationToken = uniqid();
 
     const updatedUser = await User.create({email, password: hashPassword, access, avatar, verificationToken});
+    const html = verificationLetter(verificationToken);console.log(html)
     
     // --- checking email ---
     const letter = {
         to: email,
         subject: "Verification",
-        html: verificationLetter(verificationToken)
+        html
     };
     await sendEmail(letter);
             

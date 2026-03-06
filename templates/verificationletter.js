@@ -1,4 +1,6 @@
-const verificationLetter = (verificationToken) => {
+require("dotenv").config();
+
+const verificationLetter = (verificationToken)=>{
   return `
     <!DOCTYPE html>
     <html lang="uk">
