@@ -15,7 +15,7 @@ const register = async(req, res) => {
     const avatar = gravatar.url(email, {s: "120", r: "pg", d: "identicon"});
     const verificationToken = uniqid();
 
-    const result = await User.create({email, password: hashPassword, access, avatar, verificationToken});
+    const updatedUser = await User.create({email, password: hashPassword, access, avatar, verificationToken});
     
     // --- checking email ---
     const letter = {
@@ -26,8 +26,12 @@ const register = async(req, res) => {
     await sendEmail(letter);
             
     res.status(201).json({
-        email: result.email,
-        access: result.access
+        message: "registered user in successfully",
+        data: {
+            email: updatedUser.email,
+            access: updatedUser.access,
+            verified: updatedUser.verified
+        }
     })
 };
 
