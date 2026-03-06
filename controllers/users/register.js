@@ -6,7 +6,7 @@ const { RequestError, sendEmail } = require("../../helpers");
 const verificationLetter = require("../../templates/verificationLetter");
 
 
-const register = async(req, res) => {
+const register = async (req, res) => {
     const {email, password, access} = req.body;
     const user = await User.findOne({email});
     if(user) throw RequestError(400, "Email in use");
