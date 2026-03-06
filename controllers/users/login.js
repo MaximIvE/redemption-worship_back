@@ -11,6 +11,8 @@ const login = async (req, res) => {
     const {email, password} = req.body;
     const user = await User.findOne({email});
     if(!user) throw RequestError(401, "Invalid credentials");
+    if(!user.verify) throw RequestError(403, "Unconfirmed mail");
+    
     const isPasswTrue = await bcrypt.compare(password, user.password);
     if(!isPasswTrue) throw RequestError(401, "Invalid credentials");
 

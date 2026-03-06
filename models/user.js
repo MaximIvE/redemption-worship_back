@@ -32,6 +32,18 @@ const userSchema = new Schema({
     token: {
         type: String,
         default: ""
+    },
+    avatar: {
+        type: String,
+        default: ""
+    },
+    verify: {
+        type: Boolean,
+        default: false,
+    },
+    verificationToken: {
+        type: String,
+        required: [true, 'Verify token is required'],
     }
 },{versionKey: false, timestamps: true});
 
@@ -52,12 +64,17 @@ const loginSchema = Joi.object({
 const updateInfoSchema = Joi.object({
     name: Joi.string(),
     location: Joi.string().valid("kharkiv", "svitlovodsk", "kyiv", "unkown", "other").allow('')
+});
+
+const resendSchema = Joi.object({
+    email: Joi.string().pattern(emailRegexp).required(),
 })
 
 const JoiUsers = {
     registerSchema,
     loginSchema,
-    updateInfoSchema
+    updateInfoSchema,
+    resendSchema
 }
 
 module.exports = {
