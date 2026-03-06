@@ -7,7 +7,7 @@ const { JoiUsers } = require("../../models/user");
 
 const router = express.Router();
 
-router.post("/register", validateBody(JoiUsers.registerSchema), ctrlWrapper(ctrls.register));
+router.post("/register", validateBody(JoiUsers.registerSchema), ctrlWrapper(ctrls.register ));
 router.post("/login", validateBody(JoiUsers.loginSchema ), ctrlWrapper(ctrls.login));
 
 router.post("/logout", authenticate, ctrlWrapper(ctrls.logout));
