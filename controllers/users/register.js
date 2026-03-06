@@ -12,7 +12,7 @@ const register = async(req, res) => {
     if(user) throw RequestError(400, "Email in use");
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const avatar = gravatar.url(email); 
+    const avatar = gravatar.url(email, {s: "120", r: "pg", d: "identicon"});
     const verificationToken = uniqid();
 
     const result = await User.create({email, password: hashPassword, access, avatar, verificationToken});

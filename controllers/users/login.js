@@ -10,18 +10,19 @@ const { SECRET_KEY } = process.env;
 const login = async (req, res) => {
     const {email, password} = req.body;
     const user = await User.findOne({email});
+
     if(!user) throw RequestError(401, "Invalid credentials");
-    if(!user.verify) throw RequestError(403, "Unconfirmed mail");
-    
     const isPasswTrue = await bcrypt.compare(password, user.password);
     if(!isPasswTrue) throw RequestError(401, "Invalid credentials");
+    if(!user.verify) throw RequestError(403, "Unconfirmed mail");
 
     const payload = {id: user._id, access: user.access};
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
     await User.findByIdAndUpdate({_id: user._id}, {token})
 
     res.json({
-        message: "logged in succesfylly", access: user.access, token
+        message: "logged in succesfylly",
+        data: {access: user.access, token, avatar: user.avatar}
     })
 };
 

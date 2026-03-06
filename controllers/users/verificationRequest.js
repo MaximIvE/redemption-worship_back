@@ -3,7 +3,7 @@ const { User } = require("../../models/user");
 
 
 const verificationRequest = async (req, res) => {
-    const {vt} = req.params;
+    const {vt} = req.params.vt;
     const user = await User.findOne({verificationToken: vt});
     if(!user) throw RequestError(404, "User not found");
     const {_id} = user;
