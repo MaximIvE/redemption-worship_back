@@ -1,23 +1,22 @@
-const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 
-const {SERVICE_EMAIL, MAIL_API_KEY} = process.env;
+const { MAIL_API_KEY, SERVICE_EMAIL } = process.env;
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: SERVICE_EMAIL,
-        pass: MAIL_API_KEY
-    },
-  logger: true,
-  debug: true
-});
 
-const sendEmail = async(letter)=>{
-    await transporter.sendMail({...letter, from: `RW Worship <${SERVICE_EMAIL}>`});
+sgMail.setApiKey(MAIL_API_KEY);
+
+const sendEmail = async(data) => {
+    const mail = { ...data, from:  SERVICE_EMAIL};
+    try {
+        await sgMail.send(mail)
+    } catch (error) {
+        console.error(error.message);
+        if (error.response) {
+        console.error(error.response.body)
+    }
+    }
     return true;
-};
+}
 
 module.exports = sendEmail;
