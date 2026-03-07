@@ -10,7 +10,9 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: SERVICE_EMAIL,
         pass: MAIL_API_KEY
-    }
+    },
+  logger: true,
+  debug: true
 });
 
 const sendEmail = async(letter)=>{
