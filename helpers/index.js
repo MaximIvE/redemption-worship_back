@@ -5,6 +5,7 @@ const RequestError = require("./requestError");
 const separateOfNames = require("./sync/separateOfNames");
 const sortByTitle = require("./utils/sortByTitle");
 const parseSong = require("./sync/parseJsonSong");
+const sendEmail = require("./sendEmail");
 
 
 module.exports = {
@@ -16,5 +17,6 @@ module.exports = {
     parseSong,
     handleSaveErrors,
 
-    sortByTitle
+    sortByTitle,
+    sendEmail
 }

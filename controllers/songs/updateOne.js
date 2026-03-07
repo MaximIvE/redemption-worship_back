@@ -13,7 +13,7 @@ const updatedSong = await Song.findOneAndUpdate(
 
 if(!updatedSong) throw RequestError(404);
 
-res.status(201).json(updatedSong)
+res.status(200).json(updatedSong)
 };
 
 module.exports = updateOne;
