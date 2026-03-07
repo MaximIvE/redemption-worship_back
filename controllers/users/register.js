@@ -42,9 +42,9 @@ const register = async (req, res) => {
         subject: "Verification",
         html
     };
-    console.log(process.env.BASE_APP_URL)
+
     await sendEmail(letter);
-    console.log("--> after mail")
+
     res.status(201).json({
         message: "registered user in successfully",
         data: {
