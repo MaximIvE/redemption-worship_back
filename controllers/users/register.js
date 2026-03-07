@@ -16,7 +16,7 @@ const register = async (req, res) => {
     const verificationToken = uniqid();
 
     const updatedUser = await User.create({email, password: hashPassword, access, avatar, verificationToken});
-    const html = verificationLetter(verificationToken);console.log(html)
+    const html = verificationLetter(verificationToken)
     
     // --- checking email ---
     const letter = {
