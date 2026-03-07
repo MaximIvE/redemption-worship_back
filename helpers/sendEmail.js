@@ -12,8 +12,8 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendEmail = async(letter)=>{
-    const mail = {...letter, from: `RW Worship <${SERVICE_EMAIL}>`}
-    await transporter.sendMail(mail);
+    console.log("--> sendMail")
+    await transporter.sendMail({...letter, from: `RW Worship <${SERVICE_EMAIL}>`});
     return true;
 };
 
