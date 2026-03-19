@@ -136,7 +136,7 @@ const createSongSchema = Joi.object({
     timeSig: Joi.string().pattern(timeSigRegExp)
       .messages({ "string.pattern.base": "timeSig must be in format '4/4'" }),
     songMap: Joi.array().default([]),
-    total: Joi.number().integer().min(1)
+    total: Joi.number().integer().min(1).allow(null)
   }),
   lyrics: Joi.array().items(
     Joi.object({
@@ -172,7 +172,7 @@ const updateSongSchema = Joi.object({
     timeSig: Joi.string().pattern(timeSigRegExp)
       .messages({ "string.pattern.base": "timeSig must be in format '4/4'" }),
     songMap: Joi.array().items(Joi.string().pattern(songMapRegExp)),
-    total: Joi.number().integer().min(1)
+    total: Joi.number().integer().min(1).allow(null)
   }),
   lyrics: Joi.array().items(
     Joi.object({
